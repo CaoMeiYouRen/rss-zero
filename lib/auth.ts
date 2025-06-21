@@ -3,8 +3,8 @@ import { Pool } from 'pg'
 import ms from 'ms'
 import { username, anonymous, magicLink, emailOTP } from 'better-auth/plugins'
 import Redis from 'ioredis'
-import { sendEmail } from '@/server/utils/email'
-import { Snowflake } from '@/server/utils/snowflake'
+import { sendEmail } from '../server/utils/email'
+import { Snowflake } from '../server/utils/snowflake'
 
 // 机器 ID 默认为 1。可以从环境变量中获取机器 ID
 const snowflake = new Snowflake(Number(process.env.MACHINE_ID || 1))
@@ -34,7 +34,7 @@ if (process.env.REDIS_URL) {
 export const auth = betterAuth({
     database: new Pool({
         connectionString: process.env.DATABASE_URL,
-        ssl: process.env.DATABASE_SSL ? { rejectUnauthorized: false } : false, // 是否启用 SSL
+        ssl: process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : false, // 是否启用 SSL
         max: 20, // 连接池大小
         idleTimeoutMillis: ms('120s'), //  连接池空闲超时时间
         connectionTimeoutMillis: ms('60s'), // 连接超时时间
