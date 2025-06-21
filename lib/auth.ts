@@ -3,8 +3,10 @@ import { Pool } from 'pg'
 import ms from 'ms'
 import { username, anonymous, magicLink, emailOTP } from 'better-auth/plugins'
 import Redis from 'ioredis'
+import { typeormAdapter } from '@hedystia/better-auth-typeorm'
 import { sendEmail } from '../server/utils/email'
 import { Snowflake } from '../server/utils/snowflake'
+import { dataSource } from './data-source'
 
 // 机器 ID 默认为 1。可以从环境变量中获取机器 ID
 const snowflake = new Snowflake(Number(process.env.MACHINE_ID || 1))
@@ -32,19 +34,9 @@ if (process.env.REDIS_URL) {
 }
 
 export const auth = betterAuth({
-    database: new Pool({
-        connectionString: process.env.DATABASE_URL,
-        ssl: process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : false, // 是否启用 SSL
-        max: 20, // 连接池大小
-        idleTimeoutMillis: ms('120s'), //  连接池空闲超时时间
-        connectionTimeoutMillis: ms('60s'), // 连接超时时间
-        statement_timeout: ms('60s'), // 查询超时时间
-        query_timeout: ms('60s'), // 查询超时时间
-        lock_timeout: ms('60s'), // 锁超时时间
-        idle_in_transaction_session_timeout: ms('60s'), // 事务空闲超时时间
-        application_name: 'RssZero', // 应用名称
-        client_encoding: 'UTF8', // 客户端编码
-    }),
+    // 数据库适配器
+    // 使用 TypeORM 适配器连接到 PostgreSQL 数据库
+    database: typeormAdapter(dataSource),
 
     advanced: {
         database: {  // 自定义 ID 生成逻辑
