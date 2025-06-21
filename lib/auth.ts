@@ -47,19 +47,18 @@ export const auth = betterAuth({
     }),
 
     advanced: {
-        database: {
-            generateId: (options) =>    // 自定义 ID 生成逻辑
-                // const { model, size } = options
-                snowflake.generateId() // 通过雪花算法 生成一个 16 进制的 ID
-            ,
+        database: {  // 自定义 ID 生成逻辑
+            // 通过雪花算法 生成一个 16 进制的 ID
+            generateId: (options) => snowflake.generateId(),
         },
     },
     rateLimit: {
         window: 60, // time window in seconds
         max: 100, // max requests in the window
+        storage: secondaryStorage ? 'secondary-storage' : 'memory', // 如果配置了 Redis，则使用二级存储；否则使用内存存储
         customRules: {
             '/sign-in/email': {
-                window: 10,
+                window: 60,
                 max: 3,
             },
         },
