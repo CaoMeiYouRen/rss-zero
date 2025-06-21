@@ -11,7 +11,7 @@
                     <v-text-field
                         v-model="loginData.identifier"
                         :rules="[rules.required]"
-                        label="邮箱或用户名"
+                        label="邮箱"
                         prepend-icon="mdi-account"
                         class="login-page__input"
                         required
@@ -39,16 +39,9 @@
                 <v-btn
                     variant="text"
                     block
-                    @click="showEmailOtp = true"
-                >
-                    邮箱验证码登录
-                </v-btn>
-                <v-btn
-                    variant="text"
-                    block
                     @click="showMagicLink = true"
                 >
-                    魔法链接登录
+                    邮箱一键登录
                 </v-btn>
                 <v-btn
                     variant="text"
@@ -64,48 +57,10 @@
                 >
                     没有账号？注册
                 </v-btn>
-                <!-- 邮箱验证码登录弹窗 -->
-                <v-dialog v-model="showEmailOtp" max-width="400">
-                    <v-card>
-                        <v-card-title>邮箱验证码登录</v-card-title>
-                        <v-card-text>
-                            <v-form
-                                ref="otpForm"
-                                v-model="otpValid"
-                                @submit.prevent="onEmailOtpLogin"
-                            >
-                                <v-text-field
-                                    v-model="otpData.email"
-                                    :rules="[rules.required, rules.email]"
-                                    label="邮箱"
-                                    prepend-icon="mdi-email"
-                                    required
-                                />
-                                <v-text-field
-                                    v-model="otpData.otp"
-                                    :rules="[rules.required]"
-                                    label="验证码"
-                                    prepend-icon="mdi-shield-key"
-                                    required
-                                    append-inner-icon="mdi-send"
-                                    @click:append-inner="sendOtp"
-                                />
-                                <v-btn
-                                    type="submit"
-                                    color="primary"
-                                    :loading="loading"
-                                    block
-                                >
-                                    登录
-                                </v-btn>
-                            </v-form>
-                        </v-card-text>
-                    </v-card>
-                </v-dialog>
                 <!-- 魔法链接登录弹窗 -->
                 <v-dialog v-model="showMagicLink" max-width="400">
                     <v-card>
-                        <v-card-title>魔法链接登录</v-card-title>
+                        <v-card-title>邮箱一键登录</v-card-title>
                         <v-card-text>
                             <v-form
                                 ref="magicForm"
@@ -125,7 +80,7 @@
                                     :loading="loading"
                                     block
                                 >
-                                    发送魔法链接
+                                    发送登录链接
                                 </v-btn>
                             </v-form>
                         </v-card-text>
@@ -140,19 +95,17 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useNuxtApp } from '#app'
+import { authClient } from '~/lib/auth-client'
 
 const router = useRouter()
 const { $fetch } = useNuxtApp()
 
 const valid = ref(false)
-const otpValid = ref(false)
 const magicValid = ref(false)
 const loading = ref(false)
-const showEmailOtp = ref(false)
 const showMagicLink = ref(false)
 
 const loginData = ref({ identifier: '', password: '' })
-const otpData = ref({ email: '', otp: '' })
 const magicData = ref({ email: '' })
 
 const rules = {
@@ -166,50 +119,17 @@ async function onLogin() {
     }
     loading.value = true
     try {
-        await $fetch('/api/auth/sign-in', {
-            method: 'POST',
-            body: loginData.value,
+        const { data, error } = await authClient.signIn.email({
+            email: loginData.value.identifier,
+            password: loginData.value.password,
         })
-        router.push('/')
+        if (error) {
+            alert(error.message || '登录失败')
+        } else {
+            router.push('/')
+        }
     } catch (e: any) {
-        alert(e?.data?.message || '登录失败')
-    } finally {
-        loading.value = false
-    }
-}
-
-async function onEmailOtpLogin() {
-    if (!otpValid.value) {
-        return
-    }
-    loading.value = true
-    try {
-        await $fetch('/api/auth/sign-in/email-otp', {
-            method: 'POST',
-            body: otpData.value,
-        })
-        showEmailOtp.value = false
-        router.push('/')
-    } catch (e: any) {
-        alert(e?.data?.message || '登录失败')
-    } finally {
-        loading.value = false
-    }
-}
-
-async function sendOtp() {
-    if (!otpData.value.email || !rules.email(otpData.value.email)) {
-        return
-    }
-    loading.value = true
-    try {
-        await $fetch('/api/auth/send-otp', {
-            method: 'POST',
-            body: { email: otpData.value.email },
-        })
-        alert('验证码已发送')
-    } catch (e: any) {
-        alert(e?.data?.message || '发送失败')
+        alert(e?.message || '登录失败')
     } finally {
         loading.value = false
     }
@@ -221,14 +141,17 @@ async function onMagicLinkLogin() {
     }
     loading.value = true
     try {
-        await $fetch('/api/auth/send-magic-link', {
-            method: 'POST',
-            body: magicData.value,
+        const { error } = await authClient.signIn.magicLink({
+            email: magicData.value.email,
         })
-        alert('魔法链接已发送，请查收邮箱')
-        showMagicLink.value = false
+        if (error) {
+            alert(error.message || '发送失败')
+        } else {
+            alert('魔法链接已发送，请查收邮箱')
+            showMagicLink.value = false
+        }
     } catch (e: any) {
-        alert(e?.data?.message || '发送失败')
+        alert(e?.message || '发送失败')
     } finally {
         loading.value = false
     }
