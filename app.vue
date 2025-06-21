@@ -1,5 +1,8 @@
 <template>
-    <div>
-        <NuxtPage />
-    </div>
+    <NuxtLayout>
+        <Toast />
+        <v-app>
+            <NuxtPage />
+        </v-app>
+    </NuxtLayout>
 </template>
