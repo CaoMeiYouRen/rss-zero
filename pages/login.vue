@@ -45,7 +45,7 @@
                 </v-btn>
                 <v-btn
                     variant="text"
-                    to="/reset-password"
+                    to="/forget-password"
                     block
                 >
                     忘记密码？

@@ -1,29 +1,39 @@
 <template>
-    <v-container class="reset-password-page">
-        <v-card class="reset-password-page__card">
-            <v-card-title>重置密码</v-card-title>
+    <v-container class="set-password-page">
+        <v-card class="set-password-page__card">
+            <v-card-title>设置新密码</v-card-title>
             <v-card-text>
                 <v-form
                     ref="form"
                     v-model="valid"
-                    @submit.prevent="onReset"
+                    @submit.prevent="onSetPassword"
                 >
                     <v-text-field
-                        v-model="email"
-                        :rules="[rules.required, rules.email]"
-                        label="邮箱"
-                        prepend-icon="mdi-email"
-                        class="reset-password-page__input"
+                        v-model="password"
+                        :rules="[rules.required, rules.password]"
+                        label="新密码"
+                        type="password"
+                        prepend-icon="mdi-lock"
+                        class="set-password-page__input"
+                        required
+                    />
+                    <v-text-field
+                        v-model="confirmPassword"
+                        :rules="[rules.required, v => v === password || '两次密码不一致']"
+                        label="确认新密码"
+                        type="password"
+                        prepend-icon="mdi-lock-check"
+                        class="set-password-page__input"
                         required
                     />
                     <v-btn
                         type="submit"
                         color="primary"
                         :loading="loading"
-                        class="reset-password-page__btn"
+                        class="set-password-page__btn"
                         block
                     >
-                        发送重置邮件
+                        设置密码
                     </v-btn>
                 </v-form>
                 <v-divider class="my-4" />
@@ -41,36 +51,50 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useNuxtApp } from '#app'
 import { authClient } from '~/lib/auth-client'
 
+const route = useRoute()
+const router = useRouter()
 const { $fetch } = useNuxtApp()
+
 const valid = ref(false)
 const loading = ref(false)
-const email = ref('')
+const password = ref('')
+const confirmPassword = ref('')
 
 const rules = {
     required: (v: string) => !!v || '必填项',
-    email: (v: string) => /.+@.+\..+/.test(v) || '邮箱格式不正确',
+    password: (v: string) => v.length >= 6 || '密码至少6位',
 }
 
-async function onReset() {
+async function onSetPassword() {
     if (!valid.value) {
+        return
+    }
+    if (password.value !== confirmPassword.value) {
+        alert('两次密码不一致')
         return
     }
     loading.value = true
     try {
-        const { error } = await authClient.forgetPassword({
-            email: email.value,
-            redirectTo: '/set-password',
+        const token = route.query.token as string
+        if (!token) {
+            throw new Error('无效的重置链接')
+        }
+        const { error } = await authClient.resetPassword({
+            newPassword: password.value,
+            token,
         })
         if (error) {
-            alert(error.message || '发送失败')
+            alert(error.message || '设置失败')
         } else {
-            alert('重置邮件已发送，请查收邮箱')
+            alert('密码设置成功，请登录')
+            router.push('/login')
         }
     } catch (e: any) {
-        alert(e?.message || '发送失败')
+        alert(e?.message || '设置失败')
     } finally {
         loading.value = false
     }
@@ -78,7 +102,7 @@ async function onReset() {
 </script>
 
 <style lang="scss" scoped>
-.reset-password-page {
+.set-password-page {
     display: flex;
     justify-content: center;
     align-items: center;
