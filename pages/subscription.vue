@@ -64,7 +64,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { authClient } from '@/lib/auth-client'
-import { useFetch } from '@/app'
 import { validateUrl } from '@/utils/validate'
 
 const subscriptions = ref<any[]>([])
