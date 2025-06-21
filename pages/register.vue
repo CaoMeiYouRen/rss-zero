@@ -69,6 +69,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useNuxtApp } from '#app'
+import { authClient } from '~/lib/auth-client'
 
 const router = useRouter()
 const { $fetch } = useNuxtApp()
@@ -99,18 +100,19 @@ async function onRegister() {
     }
     loading.value = true
     try {
-        await $fetch('/api/auth/sign-up', {
-            method: 'POST',
-            body: {
-                username: registerData.value.username,
-                email: registerData.value.email,
-                password: registerData.value.password,
-            },
+        const { data, error } = await authClient.signUp.email({
+            email: registerData.value.email,
+            password: registerData.value.password,
+            name: registerData.value.username,
         })
-        alert('注册成功，请前往邮箱验证')
-        router.push('/login')
+        if (error) {
+            alert(error.message || '注册失败')
+        } else {
+            alert('注册成功，请前往邮箱验证')
+            router.push('/login')
+        }
     } catch (e: any) {
-        alert(e?.data?.message || '注册失败')
+        alert(e?.message || '注册失败')
     } finally {
         loading.value = false
     }
