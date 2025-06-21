@@ -42,6 +42,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useNuxtApp } from '#app'
+import { authClient } from '~/lib/auth-client'
 
 const { $fetch } = useNuxtApp()
 const valid = ref(false)
@@ -59,13 +60,17 @@ async function onReset() {
     }
     loading.value = true
     try {
-        await $fetch('/api/auth/send-reset-password', {
-            method: 'POST',
-            body: { email: email.value },
+        const { error } = await authClient.forgetPassword({
+            email: email.value,
+            redirectTo: '/set-password',
         })
-        alert('重置邮件已发送，请查收邮箱')
+        if (error) {
+            alert(error.message || '发送失败')
+        } else {
+            alert('重置邮件已发送，请查收邮箱')
+        }
     } catch (e: any) {
-        alert(e?.data?.message || '发送失败')
+        alert(e?.message || '发送失败')
     } finally {
         loading.value = false
     }

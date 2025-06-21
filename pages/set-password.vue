@@ -53,6 +53,7 @@
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useNuxtApp } from '#app'
+import { authClient } from '~/lib/auth-client'
 
 const route = useRoute()
 const router = useRouter()
@@ -82,14 +83,18 @@ async function onSetPassword() {
         if (!token) {
             throw new Error('无效的重置链接')
         }
-        await $fetch('/api/auth/reset-password', {
-            method: 'POST',
-            body: { token, password: password.value },
+        const { error } = await authClient.resetPassword({
+            newPassword: password.value,
+            token,
         })
-        alert('密码设置成功，请登录')
-        router.push('/login')
+        if (error) {
+            alert(error.message || '设置失败')
+        } else {
+            alert('密码设置成功，请登录')
+            router.push('/login')
+        }
     } catch (e: any) {
-        alert(e?.data?.message || e?.message || '设置失败')
+        alert(e?.message || '设置失败')
     } finally {
         loading.value = false
     }
