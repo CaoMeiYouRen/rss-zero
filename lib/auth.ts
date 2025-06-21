@@ -76,6 +76,9 @@ export const auth = betterAuth({
         },
     },
     emailVerification: {
+        sendOnSignUp: process.env.NODE_ENV === 'production', // 注册时发送验证邮件
+        autoSignInAfterVerification: true, // 验证后自动登录
+        // 发送验证邮件
         sendVerificationEmail: async ({ user, url, token }, request) => {
             await sendEmail({
                 to: user.email,
