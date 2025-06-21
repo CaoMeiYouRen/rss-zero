@@ -44,6 +44,11 @@ export default defineNuxtConfig({
                 memory: 1024, // 最大 1 GB 内存
             },
         },
+        esbuild: {
+            options: {
+                target: 'esnext',
+            },
+        },
     },
     sourcemap: { client: 'hidden' },
 })
