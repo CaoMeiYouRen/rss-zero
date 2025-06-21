@@ -20,7 +20,7 @@
                     <v-btn
                         color="primary"
                         size="large"
-                        to="/feeds"
+                        to="/subscription"
                         class="mt-4"
                     >
                         开始使用

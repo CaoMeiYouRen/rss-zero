@@ -20,21 +20,21 @@ export default defineEventHandler(async (event) => {
         const body = await readBody(event)
         const { url, title } = body
         if (!url) {
-return { error: 'URL required' }
-}
+            return { error: 'URL required' }
+        }
         // 简单去重
         const exists = await pool.query('SELECT 1 FROM subscriptions WHERE user_id = $1 AND url = $2', [userId, url])
         if (exists.rowCount) {
-return { error: 'Already exists' }
-}
+            return { error: 'Already exists' }
+        }
         const { rows } = await pool.query('INSERT INTO subscriptions (url, title, user_id, created_at) VALUES ($1, $2, $3, NOW()) RETURNING *', [url, title || '', userId])
         return rows[0]
     }
     if (method === 'DELETE') {
         const { id } = getQuery(event)
         if (!id) {
-return { error: 'id required' }
-}
+            return { error: 'id required' }
+        }
         await pool.query('DELETE FROM subscriptions WHERE id = $1 AND user_id = $2', [id, userId])
         return { success: true }
     }
