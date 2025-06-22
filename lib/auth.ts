@@ -1,12 +1,10 @@
 import { betterAuth, type SecondaryStorage } from 'better-auth'
-import { Pool } from 'pg'
-import ms from 'ms'
 import { username, anonymous, magicLink, emailOTP } from 'better-auth/plugins'
 import Redis from 'ioredis'
 import { typeormAdapter } from '@hedystia/better-auth-typeorm'
 import { sendEmail } from '../server/utils/email'
 import { Snowflake } from '../server/utils/snowflake'
-import { dataSource } from './data-source'
+import { dataSource } from '../server/database'
 
 // 机器 ID 默认为 1。可以从环境变量中获取机器 ID
 const snowflake = new Snowflake(Number(process.env.MACHINE_ID || 1))

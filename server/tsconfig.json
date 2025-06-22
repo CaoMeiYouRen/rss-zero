@@ -1,3 +1,16 @@
 {
-  "extends": "../.nuxt/tsconfig.server.json"
+    "extends": "../.nuxt/tsconfig.server.json",
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "strictPropertyInitialization": false,
+        "target": "ESNext",
+        "module": "ESNext",
+        "skipLibCheck": true,
+        "resolveJsonModule": true,
+        "noImplicitAny": false,
+        "useDefineForClassFields": false, // 添加此配置
+        "allowSyntheticDefaultImports": true, // 添加此配置
+        "esModuleInterop": true, // 添加此配置
+    }
 }
