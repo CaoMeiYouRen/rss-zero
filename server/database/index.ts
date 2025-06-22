@@ -16,7 +16,7 @@ export const dataSource = new DataSource({
     // migrationsRun: true,
     synchronize: process.env.NODE_ENV !== 'production',
     logging: process.env.NODE_ENV === 'development',
-    ssl: false,
+    ssl: process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : false, // 是否启用 SSL
     extra: {
         max: 20,
         connectionTimeoutMillis: ms('60s'), // 连接超时设置为 60 秒
