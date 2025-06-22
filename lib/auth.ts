@@ -43,10 +43,24 @@ export const auth = betterAuth({
         max: 100, // max requests in the window
         storage: secondaryStorage ? 'secondary-storage' : 'memory', // 如果配置了 Redis，则使用二级存储；否则使用内存存储
         customRules: {
-            '/sign-in/email': {
-                window: 60,
-                max: 3,
+            // 合并 /sign-in/* 路径，除 /sign-in/username 外
+            '/sign-in/username': { window: 60, max: 5 },
+            '/sign-in/*': (req) => {
+                // username 已单独处理
+                if (req.url?.endsWith('/sign-in/username')) {
+                    return { window: 60, max: 5 }
+                }
+                return { window: 60, max: 3 }
             },
+            // 合并 /email-otp/* 路径
+            '/email-otp/*': { window: 60, max: 3 },
+            '/sign-up/email': { window: 60, max: 3 },
+            '/forget-password': { window: 60, max: 3 },
+            '/request-password-reset': { window: 60, max: 3 },
+            '/reset-password': { window: 60, max: 3 },
+            '/send-verification-email': { window: 60, max: 3 },
+            '/change-email': { window: 60, max: 3 },
+            '/delete-user': { window: 60, max: 2 },
         },
     },
     emailAndPassword: {
