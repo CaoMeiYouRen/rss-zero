@@ -39,8 +39,8 @@ onMounted(async () => {
     // 匿名自动登录
     const session = authClient.useSession()
     if (!session.value.data?.user?.id) {
-        // const user = await authClient.signIn.anonymous()
-        // console.log(user)
+        const user = await authClient.signIn.anonymous()
+        console.log(user)
     } else {
         console.log(session.value.data?.user)
     }

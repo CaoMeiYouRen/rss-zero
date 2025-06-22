@@ -108,8 +108,7 @@ export const typeormAdapter =
                 return modelSchema.modelName
             }
 
-            const useDatabaseGeneratedId = options?.advanced?.generateId === false
-
+            const useDatabaseGeneratedId = options?.advanced?.database?.generateId === false
             return {
                 transformInput(
                     data: Record<string, unknown>,
@@ -120,11 +119,10 @@ export const typeormAdapter =
                         useDatabaseGeneratedId || action === 'update'
                             ? {}
                             : {
-                                id: options.advanced?.generateId
-                                    ? options.advanced.generateId({ model })
+                                id: options.advanced?.database?.generateId
+                                    ? options.advanced.database.generateId({ model })
                                     : data.id || generateId(),
                             }
-
                     const modelSchema = schema[model]
                     if (!modelSchema) {
                         throw new Error(`Model ${model} not found in schema`)
