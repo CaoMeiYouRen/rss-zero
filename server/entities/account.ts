@@ -1,9 +1,8 @@
-import { Column, CreateDateColumn, Entity, UpdateDateColumn } from 'typeorm'
+import { Column, Entity } from 'typeorm'
+import { BaseEntity } from './base-entity'
 
 @Entity('account')
-export class Account {
-    @Column('varchar', { primary: true, length: 36 })
-    id: string
+export class Account extends BaseEntity {
 
     @Column('text', { nullable: false })
     accountId: string
@@ -35,9 +34,4 @@ export class Account {
     @Column('text', { nullable: true })
     password: string
 
-    @CreateDateColumn({ type: 'timestamp with time zone', nullable: true })
-    createdAt: Date
-
-    @UpdateDateColumn({ type: 'timestamp with time zone', nullable: true })
-    updatedAt: Date
 }

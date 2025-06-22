@@ -7,7 +7,7 @@ import { Snowflake } from '../server/utils/snowflake'
 import { dataSource } from '../server/database'
 
 // 机器 ID 默认为 1。可以从环境变量中获取机器 ID
-const snowflake = new Snowflake(Number(process.env.MACHINE_ID || 1))
+export const snowflake = new Snowflake(Number(process.env.MACHINE_ID || 1))
 
 // Redis 二级存储配置（仅当有配置时启用）
 let secondaryStorage: SecondaryStorage | null = null

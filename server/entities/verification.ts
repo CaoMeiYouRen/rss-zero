@@ -1,9 +1,8 @@
-import { Column, Entity, CreateDateColumn, UpdateDateColumn } from 'typeorm'
+import { Column, Entity } from 'typeorm'
+import { BaseEntity } from './base-entity'
 
 @Entity('verification')
-export class Verification {
-    @Column('varchar', { primary: true, length: 36 })
-    id: string
+export class Verification extends BaseEntity {
 
     @Column('text', { nullable: false })
     identifier: string
@@ -13,10 +12,4 @@ export class Verification {
 
     @Column('timestamp with time zone', { nullable: false })
     expiresAt: Date
-
-    @CreateDateColumn({ type: 'timestamp with time zone', nullable: true })
-    createdAt: Date
-
-    @UpdateDateColumn({ type: 'timestamp with time zone', nullable: true })
-    updatedAt: Date
 }
