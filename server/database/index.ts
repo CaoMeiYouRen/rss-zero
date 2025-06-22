@@ -1,6 +1,5 @@
 import { DataSource } from 'typeorm'
 import ms from 'ms'
-import 'reflect-metadata'
 import { Account } from '../entities/account'
 import { Session } from '../entities/session'
 import { User } from '../entities/user'
@@ -26,7 +25,12 @@ export const dataSource = new DataSource({
     entityPrefix: process.env.ENTITY_PREFIX || 'rss_zero_',
     // 表、字段命名策略，改为 snake_case
     namingStrategy: new SnakeCaseNamingStrategy(),
+    // 是否启用实体结果缓存
+    cache: false,
 })
 
 // 初始化连接（在 app 启动时调用）
 dataSource.initialize()
+// .then((conn) => {
+//     console.log(conn.entityMetadatas.find((e) => e.name === 'User'))
+// })

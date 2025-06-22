@@ -199,10 +199,12 @@ export const typeormAdapter =
                 data: T
                 select?: string[]
             }): Promise<R> {
+
                 const { model, data: values, select } = data
                 const transformed = transformInput(values, model, 'create')
 
-                const repositoryName = getModelName(model)
+                const modelName = getModelName(model)
+                const repositoryName = dataSource.entityMetadatas.find((e) => e.name.toLowerCase() === modelName.toLowerCase())?.name || modelName
                 const repository = dataSource.getRepository(repositoryName)
 
                 try {
@@ -222,7 +224,8 @@ export const typeormAdapter =
                 select?: string[]
             }): Promise<T | null> {
                 const { model, where, update, select = [] } = data
-                const repositoryName = getModelName(model)
+                const modelName = getModelName(model)
+                const repositoryName = dataSource.entityMetadatas.find((e) => e.name.toLowerCase() === modelName.toLowerCase())?.name || modelName
                 const repository = dataSource.getRepository(repositoryName)
 
                 try {
@@ -254,7 +257,8 @@ export const typeormAdapter =
 
             async delete(data: { model: string, where: Where[] }): Promise<void> {
                 const { model, where } = data
-                const repositoryName = getModelName(model)
+                const modelName = getModelName(model)
+                const repositoryName = dataSource.entityMetadatas.find((e) => e.name.toLowerCase() === modelName.toLowerCase())?.name || modelName
                 const repository = dataSource.getRepository(repositoryName)
 
                 try {
@@ -273,7 +277,8 @@ export const typeormAdapter =
                 select?: string[]
             }): Promise<T | null> {
                 const { model, where, select } = data
-                const repositoryName = getModelName(model)
+                const modelName = getModelName(model)
+                const repositoryName = dataSource.entityMetadatas.find((e) => e.name.toLowerCase() === modelName.toLowerCase())?.name || modelName
                 const repository = dataSource.getRepository(repositoryName)
 
                 try {
@@ -298,7 +303,8 @@ export const typeormAdapter =
                 sortBy?: { field: string, direction: 'asc' | 'desc' }
             }): Promise<T[]> {
                 const { model, where, limit, offset, sortBy } = data
-                const repositoryName = getModelName(model)
+                const modelName = getModelName(model)
+                const repositoryName = dataSource.entityMetadatas.find((e) => e.name.toLowerCase() === modelName.toLowerCase())?.name || modelName
                 const repository = dataSource.getRepository(repositoryName)
 
                 try {
@@ -325,7 +331,8 @@ export const typeormAdapter =
 
             async count(data) {
                 const { model, where } = data
-                const repositoryName = getModelName(model)
+                const modelName = getModelName(model)
+                const repositoryName = dataSource.entityMetadatas.find((e) => e.name.toLowerCase() === modelName.toLowerCase())?.name || modelName
                 const repository = dataSource.getRepository(repositoryName)
 
                 try {
@@ -341,7 +348,8 @@ export const typeormAdapter =
 
             async updateMany(data) {
                 const { model, where, update } = data
-                const repositoryName = getModelName(model)
+                const modelName = getModelName(model)
+                const repositoryName = dataSource.entityMetadatas.find((e) => e.name.toLowerCase() === modelName.toLowerCase())?.name || modelName
                 const repository = dataSource.getRepository(repositoryName)
 
                 try {
@@ -359,7 +367,8 @@ export const typeormAdapter =
 
             async deleteMany(data) {
                 const { model, where } = data
-                const repositoryName = getModelName(model)
+                const modelName = getModelName(model)
+                const repositoryName = dataSource.entityMetadatas.find((e) => e.name.toLowerCase() === modelName.toLowerCase())?.name || modelName
                 const repository = dataSource.getRepository(repositoryName)
 
                 try {
