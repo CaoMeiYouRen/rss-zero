@@ -1,5 +1,5 @@
 import { PrimaryColumn, CreateDateColumn, UpdateDateColumn, BeforeInsert } from 'typeorm'
-import { snowflake } from '@/lib/auth'
+import { snowflake } from '../utils/snowflake'
 
 /**
  * 基础实体类

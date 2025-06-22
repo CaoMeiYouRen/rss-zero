@@ -56,6 +56,8 @@ export class Snowflake {
     }
 }
 
-// const snowflake = new Snowflake(1) // 机器 ID 为 1
+// 机器 ID 默认为 1。可以从环境变量中获取机器 ID
+export const snowflake = new Snowflake(Number(process.env.MACHINE_ID || 1))
+
 // const id = snowflake.generateId()
 // console.log(id, id.length) // 输出生成的 Snowflake ID 和长度

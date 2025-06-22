@@ -3,11 +3,8 @@ import { username, anonymous, magicLink, emailOTP } from 'better-auth/plugins'
 import Redis from 'ioredis'
 import { typeormAdapter } from '@hedystia/better-auth-typeorm'
 import { sendEmail } from '../server/utils/email'
-import { Snowflake } from '../server/utils/snowflake'
+import { snowflake } from '../server/utils/snowflake'
 import { dataSource } from '../server/database'
-
-// 机器 ID 默认为 1。可以从环境变量中获取机器 ID
-export const snowflake = new Snowflake(Number(process.env.MACHINE_ID || 1))
 
 // Redis 二级存储配置（仅当有配置时启用）
 let secondaryStorage: SecondaryStorage | null = null
