@@ -22,29 +22,36 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useNuxtApp } from '#app'
+import { authClient } from '@/lib/auth-client'
 
 const route = useRoute()
 const router = useRouter()
-const { $fetch } = useNuxtApp()
 
 const status = ref<'success' | 'error'>('success')
 const message = ref('正在验证...')
 
 onMounted(async () => {
-    const token = route.query.token as string
-    if (!token) {
+    // 假设 email 和 otp 通过 URL 查询参数传递
+    const email = route.query.email as string
+    const otp = route.query.otp as string
+    if (!email || !otp) {
         status.value = 'error'
         message.value = '无效的验证链接'
         return
     }
     try {
-        await $fetch('/api/auth/verify-email', {
-            method: 'POST',
-            body: { token },
+        // 使用 verifyEmail 方法进行验证
+        const { data, error } = await authClient.emailOtp.verifyEmail({
+            email,
+            otp,
         })
-        status.value = 'success'
-        message.value = '邮箱验证成功，请登录'
+        if (error) {
+            status.value = 'error'
+            message.value = error.message || '邮箱验证失败'
+        } else {
+            status.value = 'success'
+            message.value = '邮箱验证成功，请登录'
+        }
     } catch (e: any) {
         status.value = 'error'
         message.value = e?.data?.message || '邮箱验证失败'
