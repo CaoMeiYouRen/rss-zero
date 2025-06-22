@@ -105,7 +105,12 @@ export const typeormAdapter =
                 if (!modelSchema) {
                     throw new Error(`Model ${model} not found in schema`)
                 }
-                return modelSchema.modelName
+                const modelName = modelSchema.modelName
+                // 直接查找匹配的 entity name，找不到则返回 modelName
+                const entity = dataSource.entityMetadatas.find(
+                    (e) => e.name.toLowerCase() === modelName.toLowerCase(),
+                )
+                return entity?.name || modelName
             }
 
             const useDatabaseGeneratedId = options?.advanced?.database?.generateId === false
@@ -201,8 +206,7 @@ export const typeormAdapter =
                 const { model, data: values, select } = data
                 const transformed = transformInput(values, model, 'create')
 
-                const modelName = getModelName(model)
-                const repositoryName = dataSource.entityMetadatas.find((e) => e.name.toLowerCase() === modelName.toLowerCase())?.name || modelName
+                const repositoryName = getModelName(model)
                 const repository = dataSource.getRepository(repositoryName)
 
                 try {
@@ -222,8 +226,7 @@ export const typeormAdapter =
                 select?: string[]
             }): Promise<T | null> {
                 const { model, where, update, select = [] } = data
-                const modelName = getModelName(model)
-                const repositoryName = dataSource.entityMetadatas.find((e) => e.name.toLowerCase() === modelName.toLowerCase())?.name || modelName
+                const repositoryName = getModelName(model)
                 const repository = dataSource.getRepository(repositoryName)
 
                 try {
@@ -255,8 +258,7 @@ export const typeormAdapter =
 
             async delete(data: { model: string, where: Where[] }): Promise<void> {
                 const { model, where } = data
-                const modelName = getModelName(model)
-                const repositoryName = dataSource.entityMetadatas.find((e) => e.name.toLowerCase() === modelName.toLowerCase())?.name || modelName
+                const repositoryName = getModelName(model)
                 const repository = dataSource.getRepository(repositoryName)
 
                 try {
@@ -275,8 +277,7 @@ export const typeormAdapter =
                 select?: string[]
             }): Promise<T | null> {
                 const { model, where, select } = data
-                const modelName = getModelName(model)
-                const repositoryName = dataSource.entityMetadatas.find((e) => e.name.toLowerCase() === modelName.toLowerCase())?.name || modelName
+                const repositoryName = getModelName(model)
                 const repository = dataSource.getRepository(repositoryName)
 
                 try {
@@ -301,8 +302,7 @@ export const typeormAdapter =
                 sortBy?: { field: string, direction: 'asc' | 'desc' }
             }): Promise<T[]> {
                 const { model, where, limit, offset, sortBy } = data
-                const modelName = getModelName(model)
-                const repositoryName = dataSource.entityMetadatas.find((e) => e.name.toLowerCase() === modelName.toLowerCase())?.name || modelName
+                const repositoryName = getModelName(model)
                 const repository = dataSource.getRepository(repositoryName)
 
                 try {
@@ -329,8 +329,7 @@ export const typeormAdapter =
 
             async count(data) {
                 const { model, where } = data
-                const modelName = getModelName(model)
-                const repositoryName = dataSource.entityMetadatas.find((e) => e.name.toLowerCase() === modelName.toLowerCase())?.name || modelName
+                const repositoryName = getModelName(model)
                 const repository = dataSource.getRepository(repositoryName)
 
                 try {
@@ -346,8 +345,7 @@ export const typeormAdapter =
 
             async updateMany(data) {
                 const { model, where, update } = data
-                const modelName = getModelName(model)
-                const repositoryName = dataSource.entityMetadatas.find((e) => e.name.toLowerCase() === modelName.toLowerCase())?.name || modelName
+                const repositoryName = getModelName(model)
                 const repository = dataSource.getRepository(repositoryName)
 
                 try {
@@ -365,8 +363,7 @@ export const typeormAdapter =
 
             async deleteMany(data) {
                 const { model, where } = data
-                const modelName = getModelName(model)
-                const repositoryName = dataSource.entityMetadatas.find((e) => e.name.toLowerCase() === modelName.toLowerCase())?.name || modelName
+                const repositoryName = getModelName(model)
                 const repository = dataSource.getRepository(repositoryName)
 
                 try {
