@@ -1,4 +1,4 @@
-import { Column, Entity } from 'typeorm'
+import { Column, Entity, CreateDateColumn, UpdateDateColumn } from 'typeorm'
 
 @Entity('verification')
 export class Verification {
@@ -14,9 +14,9 @@ export class Verification {
     @Column('timestamp with time zone', { name: 'expiresAt', nullable: false })
     expiresAt: Date
 
-    @Column('timestamp with time zone', { name: 'createdAt', nullable: true })
+    @CreateDateColumn({ type: 'timestamp with time zone', nullable: true })
     createdAt: Date
 
-    @Column('timestamp with time zone', { name: 'updatedAt', nullable: true })
+    @UpdateDateColumn({ type: 'timestamp with time zone', nullable: true })
     updatedAt: Date
 }

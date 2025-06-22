@@ -1,4 +1,4 @@
-import { Column, Entity } from 'typeorm'
+import { Column, Entity, CreateDateColumn, UpdateDateColumn } from 'typeorm'
 
 @Entity('session')
 export class Session {
@@ -11,10 +11,10 @@ export class Session {
     @Column('text', { name: 'token', nullable: false })
     token: string
 
-    @Column('timestamp with time zone', { name: 'createdAt', nullable: false, default: () => 'CURRENT_TIMESTAMP' })
+    @CreateDateColumn({ type: 'timestamp with time zone' })
     createdAt: Date
 
-    @Column('timestamp with time zone', { name: 'updatedAt', nullable: false, default: () => 'CURRENT_TIMESTAMP' })
+    @UpdateDateColumn({ type: 'timestamp with time zone' })
     updatedAt: Date
 
     @Column('text', { name: 'ipAddress', nullable: true })

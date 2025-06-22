@@ -1,4 +1,4 @@
-import { Column, Entity } from 'typeorm'
+import { Column, Entity, CreateDateColumn, UpdateDateColumn } from 'typeorm'
 
 @Entity('user')
 export class User {
@@ -17,9 +17,9 @@ export class User {
     @Column('text', { name: 'image', nullable: true })
     image: string
 
-    @Column('timestamp with time zone', { name: 'createdAt', nullable: false, default: () => 'CURRENT_TIMESTAMP' })
+    @CreateDateColumn({ type: 'timestamp with time zone' })
     createdAt: Date
 
-    @Column('timestamp with time zone', { name: 'updatedAt', nullable: false, default: () => 'CURRENT_TIMESTAMP' })
+    @UpdateDateColumn({ type: 'timestamp with time zone' })
     updatedAt: Date
 }
