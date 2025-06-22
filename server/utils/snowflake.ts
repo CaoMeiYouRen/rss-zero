@@ -58,4 +58,4 @@ export class Snowflake {
 
 // const snowflake = new Snowflake(1) // 机器 ID 为 1
 // const id = snowflake.generateId()
-// console.log(id)
+// console.log(id, id.length) // 输出生成的 Snowflake ID 和长度

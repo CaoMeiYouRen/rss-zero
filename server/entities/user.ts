@@ -2,19 +2,19 @@ import { Column, Entity, CreateDateColumn, UpdateDateColumn } from 'typeorm'
 
 @Entity('user')
 export class User {
-    @Column('varchar', { primary: true, name: 'id', length: 36 })
+    @Column('varchar', { primary: true, length: 36 })
     id: string
 
-    @Column('text', { name: 'name', nullable: false })
+    @Column('text', { nullable: false })
     name: string
 
-    @Column('varchar', { name: 'email', length: 255, nullable: false })
+    @Column('varchar', { length: 255, nullable: false })
     email: string
 
-    @Column('boolean', { name: 'emailVerified', default: false })
+    @Column('boolean', { default: false })
     emailVerified: boolean
 
-    @Column('text', { name: 'image', nullable: true })
+    @Column('text', { nullable: true })
     image: string
 
     @CreateDateColumn({ type: 'timestamp with time zone' })
