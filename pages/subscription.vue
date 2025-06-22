@@ -132,12 +132,13 @@ async function importOpml() {
     }
 }
 
-onMounted(async () => {
-    // 匿名自动登录
-    const session = authClient.useSession()
-    if (!session.value.data?.user?.id) {
-        await authClient.signIn.anonymous()
-    }
-    fetchSubscriptions()
-})
+// onMounted(async () => {
+//     // 匿名自动登录
+//     const session = authClient.useSession()
+//     if (!session.value.data?.user?.id) {
+//         const user = await authClient.signIn.anonymous()
+//         console.log(user)
+//     }
+//     // fetchSubscriptions()
+// })
 </script>

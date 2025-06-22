@@ -33,9 +33,16 @@
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
+import { authClient } from '@/lib/auth-client'
 
-// const { data } = await useFetch('/api/test')
-
+onMounted(async () => {
+    // 匿名自动登录
+    const session = authClient.useSession()
+    if (!session.value.data?.user?.id) {
+        const user = await authClient.signIn.anonymous()
+        console.log(user)
+    }
+})
 </script>
 
 <style scoped lang="scss">

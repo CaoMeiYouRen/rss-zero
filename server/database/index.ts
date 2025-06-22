@@ -1,5 +1,6 @@
 import { DataSource } from 'typeorm'
 import ms from 'ms'
+import 'reflect-metadata'
 import { Account } from '../entities/account'
 import { Session } from '../entities/session'
 import { User } from '../entities/user'

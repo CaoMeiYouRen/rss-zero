@@ -34,6 +34,7 @@
     "p-queue": "^8.1.0",
     "pg": "^8.16.2",
     "push-all-in-one": "^4.4.3",
+    "reflect-metadata": "^0.2.2",
     "typeorm": "^0.3.25",
     "vue": "^3.5.16",
     "vue-router": "^4.5.1",
