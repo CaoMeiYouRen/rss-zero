@@ -1,8 +1,6 @@
 import { betterAuth, type SecondaryStorage } from 'better-auth'
 import { username, anonymous, magicLink, emailOTP } from 'better-auth/plugins'
 import Redis from 'ioredis'
-import { Pool } from 'pg'
-import ms from 'ms'
 import { typeormAdapter } from '../server/database/typeorm-adapter'
 import { sendEmail } from '../server/utils/email'
 import { snowflake } from '../server/utils/snowflake'
@@ -34,20 +32,6 @@ export const auth = betterAuth({
     // 数据库适配器
     // 使用 TypeORM 适配器连接到 PostgreSQL 数据库
     database: typeormAdapter(dataSource),
-    // database: new Pool({
-    //     connectionString: process.env.DATABASE_URL,
-    //     ssl: process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : false, // 是否启用 SSL
-    //     max: 20, // 连接池大小
-    //     idleTimeoutMillis: ms('120s'), //  连接池空闲超时时间
-    //     connectionTimeoutMillis: ms('60s'), // 连接超时时间
-    //     statement_timeout: ms('60s'), // 查询超时时间
-    //     query_timeout: ms('60s'), // 查询超时时间
-    //     lock_timeout: ms('60s'), // 锁超时时间
-    //     idle_in_transaction_session_timeout: ms('60s'), // 事务空闲超时时间
-    //     application_name: 'RssZero', // 应用名称
-    //     client_encoding: 'UTF8', // 客户端编码
-    // }),
-
     advanced: {
         database: {  // 自定义 ID 生成逻辑
             // 通过雪花算法 生成一个 16 进制的 ID

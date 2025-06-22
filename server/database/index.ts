@@ -7,7 +7,7 @@ import { Verification } from '../entities/verification'
 import { SnakeCaseNamingStrategy } from './naming-strategy'
 
 const entities = [Account, Session, User, Verification]
-
+// console.log('process.env.DATABASE_URL', process.env.DATABASE_URL)
 export const dataSource = new DataSource({
     type: 'postgres',
     url: process.env.DATABASE_URL, // 如果使用环境变量配置数据库连接
@@ -28,4 +28,4 @@ export const dataSource = new DataSource({
 })
 
 // 初始化连接（在 app 启动时调用）
-await dataSource.initialize()
+dataSource.initialize()
