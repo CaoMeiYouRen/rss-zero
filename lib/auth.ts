@@ -1,5 +1,5 @@
 import { betterAuth, type SecondaryStorage } from 'better-auth'
-import { username, anonymous, magicLink, emailOTP } from 'better-auth/plugins'
+import { username, anonymous, magicLink, emailOTP, openAPI } from 'better-auth/plugins'
 import Redis from 'ioredis'
 import { typeormAdapter } from '../server/database/typeorm-adapter'
 import { sendEmail } from '../server/utils/email'
@@ -107,6 +107,9 @@ export const auth = betterAuth({
                 })
             },
         }),
-    ],
+        openAPI({
+            disableDefaultReference: process.env.NODE_ENV !== 'development', // 开发环境启用 OpenAPI 插件
+        }),
+    ], // 过滤掉未定义的插件
     ...secondaryStorage ? { secondaryStorage } : {},
 })
