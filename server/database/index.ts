@@ -4,10 +4,10 @@ import { Account } from '../entities/account'
 import { Session } from '../entities/session'
 import { User } from '../entities/user'
 import { Verification } from '../entities/verification'
+import { Subscription } from '../entities/subscription'
 import { SnakeCaseNamingStrategy } from './naming-strategy'
 
-const entities = [Account, Session, User, Verification]
-// console.log('process.env.DATABASE_URL', process.env.DATABASE_URL)
+const entities = [Account, Session, User, Verification, Subscription]
 export const dataSource = new DataSource({
     type: 'postgres',
     url: process.env.DATABASE_URL, // 如果使用环境变量配置数据库连接

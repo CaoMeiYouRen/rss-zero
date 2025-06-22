@@ -81,6 +81,7 @@ export const auth = betterAuth({
             usernameValidator: (name) => /^[a-zA-Z0-9_-]+$/.test(name), // 用户名只能包含字母、数字、下划线、连字符
         }), // 支持用户名登录
         anonymous({ // 支持匿名登录
+            emailDomainName: process.env.ANONYMOUS_EMAIL_DOMAIN_NAME || 'anonymous.com', // 匿名用户的默认电子邮件域名
             onLinkAccount: async ({ anonymousUser, newUser }) => {
                 // 执行操作，如将购物车项目从匿名用户移动到新用户
                 // console.log('Linking anonymous user to new user:', anonymousUser, newUser)

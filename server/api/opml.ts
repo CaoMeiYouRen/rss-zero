@@ -1,23 +1,20 @@
-import { defineEventHandler, readBody, sendStream, getQuery } from 'h3'
-import { Pool } from 'pg'
+import { defineEventHandler, readRawBody } from 'h3'
 import { parseStringPromise, Builder } from 'xml2js'
+import { dataSource } from '../database'
+import { Subscription } from '../entities/subscription'
 
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : false,
-})
-
-// OPML导入/导出API
 export default defineEventHandler(async (event) => {
     const method = event.node.req.method
     const userId = event.context.auth?.user?.id || 'anonymous'
+    const repo = dataSource.getRepository(Subscription)
+
     if (method === 'POST') {
         // 导入OPML
-        const body = await readBody(event)
-        if (!body || !body.opml) {
+        const raw = await readRawBody(event)
+        if (!raw) {
             return { error: 'No OPML data' }
         }
-        const opml = await parseStringPromise(body.opml)
+        const opml = await parseStringPromise(raw.toString())
         const outlines = opml.opml.body[0].outline || []
         let count = 0
         for (const item of outlines) {
@@ -26,10 +23,15 @@ export default defineEventHandler(async (event) => {
             if (!url) {
                 continue
             }
-            // 去重
-            const exists = await pool.query('SELECT 1 FROM subscriptions WHERE user_id = $1 AND url = $2', [userId, url])
-            if (!exists.rowCount) {
-                await pool.query('INSERT INTO subscriptions (url, title, user_id, created_at) VALUES ($1, $2, $3, NOW())', [url, title, userId])
+            const exists = await repo.findOne({ where: { userId, url } })
+            if (!exists) {
+                const sub = repo.create({
+                    url,
+                    title,
+                    userId,
+                    createdAt: new Date(),
+                })
+                await repo.save(sub)
                 count++
             }
         }
@@ -37,14 +39,14 @@ export default defineEventHandler(async (event) => {
     }
     if (method === 'GET') {
         // 导出OPML
-        const { rows } = await pool.query('SELECT * FROM subscriptions WHERE user_id = $1', [userId])
+        const subs = await repo.find({ where: { userId } })
         const builder = new Builder()
         const opmlObj = {
             opml: {
                 $: { version: '1.0' },
                 head: [{ title: 'RSS Zero Subscriptions' }],
                 body: [{
-                    outline: rows.map((r) => ({
+                    outline: subs.map((r) => ({
                         $: {
                             text: r.title || r.url,
                             title: r.title || r.url,

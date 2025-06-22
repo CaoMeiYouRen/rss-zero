@@ -134,8 +134,9 @@ async function importOpml() {
 
 onMounted(async () => {
     // 匿名自动登录
-    if (!authClient.isAuthenticated.value) {
-        await authClient.signInAnonymous()
+    const session = authClient.useSession()
+    if (!session.value.data?.user?.id) {
+        await authClient.signIn.anonymous()
     }
     fetchSubscriptions()
 })

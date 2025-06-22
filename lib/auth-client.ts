@@ -1,5 +1,5 @@
 import { createAuthClient } from 'better-auth/vue'
-import { usernameClient, magicLinkClient, emailOTPClient, inferAdditionalFields } from 'better-auth/client/plugins'
+import { usernameClient, magicLinkClient, emailOTPClient, inferAdditionalFields, anonymousClient } from 'better-auth/client/plugins'
 import type { auth } from './auth'
 
 export const authClient = createAuthClient({
@@ -10,5 +10,6 @@ export const authClient = createAuthClient({
         usernameClient(),
         magicLinkClient(),
         emailOTPClient(),
+        anonymousClient(),
     ],
 })
