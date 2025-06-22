@@ -57,7 +57,7 @@
                 >
                     没有账号？注册
                 </v-btn>
-                <!-- 魔法链接登录弹窗 -->
+                <!-- 一次性链接登录弹窗 -->
                 <v-dialog v-model="showMagicLink" max-width="400">
                     <v-card>
                         <v-card-title>邮箱一键登录</v-card-title>
@@ -147,7 +147,7 @@ async function onMagicLinkLogin() {
         if (error) {
             alert(error.message || '发送失败')
         } else {
-            alert('魔法链接已发送，请查收邮箱')
+            alert('登录链接已发送，请查收邮箱')
             showMagicLink.value = false
         }
     } catch (e: any) {

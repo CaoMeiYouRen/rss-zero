@@ -103,7 +103,7 @@ export const auth = betterAuth({
 
             },
         }),
-        magicLink({ // 支持魔法链接登录
+        magicLink({ // 支持一次性链接登录
             sendMagicLink: async ({ email, token, url }, request) => {
                 await sendEmail({
                     to: email,
