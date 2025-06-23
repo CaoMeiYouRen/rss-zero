@@ -1,7 +1,10 @@
 <template>
-    <v-container class="login-page">
-        <v-card class="login-page__card">
-            <v-card-title>登录</v-card-title>
+    <v-container class="login-page" fluid>
+        <div class="login-page__bg" />
+        <v-card class="login-page__card" elevation="12">
+            <v-card-title class="login-page__title">
+                登录
+            </v-card-title>
             <v-card-text>
                 <v-form
                     ref="form"
@@ -14,6 +17,9 @@
                         label="邮箱"
                         prepend-icon="mdi-account"
                         class="login-page__input"
+                        variant="outlined"
+                        density="comfortable"
+                        color="primary"
                         required
                     />
                     <v-text-field
@@ -23,6 +29,9 @@
                         type="password"
                         prepend-icon="mdi-lock"
                         class="login-page__input"
+                        variant="outlined"
+                        density="comfortable"
+                        color="primary"
                         required
                     />
                     <v-btn
@@ -31,36 +40,38 @@
                         :loading="loading"
                         class="login-page__btn"
                         block
+                        size="large"
+                        rounded
                     >
                         登录
                     </v-btn>
                 </v-form>
-                <v-divider class="my-4" />
+                <v-divider class="login-page__divider" />
                 <v-btn
-                    variant="text"
+                    color="primary"
+                    class="login-page__magic-btn"
                     block
+                    size="large"
+                    rounded
+                    prepend-icon="mdi-email-fast-outline"
                     @click="showMagicLink = true"
                 >
                     邮箱一键登录
                 </v-btn>
-                <v-btn
-                    variant="text"
-                    to="/forget-password"
-                    block
-                >
-                    忘记密码？
-                </v-btn>
-                <v-btn
-                    variant="text"
-                    to="/register"
-                    block
-                >
-                    没有账号？注册
-                </v-btn>
+                <div class="login-page__links">
+                    <NuxtLink to="/forget-password" class="login-page__text-link">
+                        忘记密码？
+                    </NuxtLink>
+                    <NuxtLink to="/register" class="login-page__text-link">
+                        没有账号？注册
+                    </NuxtLink>
+                </div>
                 <!-- 一次性链接登录弹窗 -->
                 <v-dialog v-model="showMagicLink" max-width="400">
-                    <v-card>
-                        <v-card-title>邮箱一键登录</v-card-title>
+                    <v-card class="login-page__magic-card">
+                        <v-card-title class="login-page__magic-title">
+                            邮箱一键登录
+                        </v-card-title>
                         <v-card-text>
                             <v-form
                                 ref="magicForm"
@@ -72,6 +83,9 @@
                                     :rules="[rules.required, rules.email]"
                                     label="邮箱"
                                     prepend-icon="mdi-email"
+                                    variant="outlined"
+                                    color="primary"
+                                    class="login-page__magic-input"
                                     required
                                 />
                                 <v-btn
@@ -79,6 +93,9 @@
                                     color="primary"
                                     :loading="loading"
                                     block
+                                    rounded
+                                    size="large"
+                                    prepend-icon="mdi-send"
                                 >
                                     发送登录链接
                                 </v-btn>
@@ -94,11 +111,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useNuxtApp } from '#app'
-import { authClient } from '~/lib/auth-client'
+import { authClient } from '@/lib/auth-client'
 
 const router = useRouter()
-const { $fetch } = useNuxtApp()
 
 const valid = ref(false)
 const magicValid = ref(false)
@@ -160,23 +175,132 @@ async function onMagicLinkLogin() {
 
 <style lang="scss" scoped>
 .login-page {
+    position: relative;
+    min-height: 100vh;
     display: flex;
-    justify-content: center;
     align-items: center;
-    min-height: 80vh;
+    justify-content: center;
+    overflow: hidden;
+
+    &__bg {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        background: linear-gradient(135deg, #e3f0ff 0%, #f9fafe 100%);
+        /* 可根据品牌色调整渐变 */
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+    }
 
     &__card {
+        position: relative;
+        z-index: 1;
         width: 100%;
-        max-width: 400px;
-        padding: 32px 24px;
+        max-width: 420px;
+        padding: 40px 32px 32px 32px;
+        border-radius: 24px;
+        box-shadow: 0 8px 32px 0 rgba(60, 80, 180, 0.10), 0 1.5px 6px 0 rgba(60, 80, 180, 0.06);
+        background: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    &__title {
+        font-size: 2rem;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 12px;
+        letter-spacing: 1px;
+        color: #234;
     }
 
     &__input {
-        margin-bottom: 16px;
+        margin-bottom: 20px;
+        font-size: 1rem;
     }
 
     &__btn {
         margin-top: 8px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px 0 rgba(60, 80, 180, 0.08);
+    }
+
+    &__divider {
+        margin: 28px 0 18px 0;
+        border-color: #e3e8f0;
+    }
+
+    &__magic-btn {
+        margin-bottom: 18px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        border-radius: 8px;
+        background: linear-gradient(90deg, #3b5bfd 0%, #4f8cff 100%);
+        color: #fff !important;
+        box-shadow: 0 2px 8px 0 rgba(60, 80, 180, 0.08);
+        transition: background 0.2s;
+        &:hover {
+            background: linear-gradient(90deg, #2a47c6 0%, #3b5bfd 100%);
+        }
+    }
+
+    &__links {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        margin-top: 2px;
+        margin-bottom: 2px;
+    }
+
+    &__text-link {
+        color: #8a94a6;
+        font-size: 0.98rem;
+        text-align: center;
+        text-decoration: none;
+        margin: 0 0 2px 0;
+        transition: color 0.2s;
+        font-weight: 500;
+        &:hover {
+            color: #3b5bfd;
+            text-decoration: underline;
+        }
+    }
+
+    &__magic-card {
+        border-radius: 18px;
+        box-shadow: 0 4px 24px 0 rgba(60, 80, 180, 0.10);
+        background: #fafdff;
+    }
+
+    &__magic-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #234;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    &__magic-input {
+        background: #f3f7fd;
+        border-radius: 8px;
+        margin-bottom: 18px;
+    }
+
+    @media (max-width: 600px) {
+        &__card {
+            max-width: 98vw;
+            padding: 28px 8vw 24px 8vw;
+            border-radius: 16px;
+        }
+        &__title {
+            font-size: 1.4rem;
+        }
     }
 }
 </style>
