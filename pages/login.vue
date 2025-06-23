@@ -14,7 +14,7 @@
                     <v-text-field
                         v-model="loginData.identifier"
                         :rules="[rules.required]"
-                        label="邮箱"
+                        label="邮箱或用户名"
                         prepend-icon="mdi-account"
                         class="login-page__input"
                         variant="outlined"
@@ -105,7 +105,6 @@
                 </v-dialog>
             </v-card-text>
         </v-card>
-        <!-- 移除本地 v-snackbar -->
     </v-container>
 </template>
 
@@ -113,7 +112,6 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { authClient } from '@/lib/auth-client'
-// 引入全局弹窗 composable
 import { useGlobalSnackbar } from '@/composables/use-global-snackbar'
 
 const router = useRouter()
@@ -127,24 +125,15 @@ const showMagicLink = ref(false)
 const loginData = ref({ identifier: '', password: '' })
 const magicData = ref({ email: '' })
 
-// 移除本地 snackbar 相关代码
-// const snackbar = ref({
-//     show: false,
-//     text: '',
-//     color: 'error',
-// })
-
 const rules = {
     required: (v: string) => !!v || '必填项',
     email: (v: string) => /.+@.+\..+/.test(v) || '邮箱格式不正确',
 }
 
-// 修改 showSnackbar 为调用全局弹窗
-// function showSnackbar(text: string, color = 'error') {
-//     snackbar.value.text = text
-//     snackbar.value.color = color
-//     snackbar.value.show = true
-// }
+// 判断是否为邮箱
+function isEmail(str: string) {
+    return /.+@.+\..+/.test(str)
+}
 
 async function onLogin() {
     if (!valid.value) {
@@ -152,10 +141,20 @@ async function onLogin() {
     }
     loading.value = true
     try {
-        const { data, error } = await authClient.signIn.email({
-            email: loginData.value.identifier,
-            password: loginData.value.password,
-        })
+        let data; let error
+        if (isEmail(loginData.value.identifier)) {
+            // 邮箱登录
+            ({ data, error } = await authClient.signIn.email({
+                email: loginData.value.identifier,
+                password: loginData.value.password,
+            }))
+        } else {
+            // 用户名登录
+            ({ data, error } = await authClient.signIn.username({
+                username: loginData.value.identifier,
+                password: loginData.value.password,
+            }))
+        }
         if (error) {
             showSnackbar(error.message || '登录失败', 'error')
         } else {
