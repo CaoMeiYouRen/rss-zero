@@ -1,21 +1,35 @@
 <template>
-    <v-container>
-        <v-row>
-            <v-col cols="12" md="8">
-                <v-card>
-                    <v-card-title>订阅管理</v-card-title>
+    <v-container class="subscription-page" fluid>
+        <div class="subscription-page__bg" />
+        <v-row justify="center">
+            <v-col
+                cols="12"
+                md="8"
+                lg="6"
+            >
+                <v-card class="subscription-page__card" elevation="12">
+                    <v-card-title class="subscription-page__title">
+                        订阅管理
+                    </v-card-title>
                     <v-card-text>
                         <v-form @submit.prevent="addSubscription">
                             <v-text-field
                                 v-model="newUrl"
                                 label="添加RSS订阅源URL"
                                 :rules="[urlRule]"
+                                class="subscription-page__input"
+                                variant="outlined"
+                                density="comfortable"
+                                color="primary"
                                 required
                             />
                             <v-btn
                                 type="submit"
                                 color="primary"
                                 :disabled="!validUrl"
+                                class="subscription-page__btn"
+                                rounded
+                                size="large"
                             >
                                 添加
                             </v-btn>
@@ -24,10 +38,11 @@
                             v-if="error"
                             type="error"
                             dense
+                            class="subscription-page__alert"
                         >
                             {{ error }}
                         </v-alert>
-                        <v-list>
+                        <v-list class="subscription-page__list">
                             <v-list-item v-for="item in subscriptions" :key="item.id">
                                 <v-list-item-content>
                                     <v-list-item-title>{{ item.title || item.url }}</v-list-item-title>
@@ -42,16 +57,27 @@
                         </v-list>
                     </v-card-text>
                 </v-card>
-                <v-card class="mt-4">
-                    <v-card-title>OPML 导入/导出</v-card-title>
+                <v-card class="mt-4 subscription-page__card" elevation="12">
+                    <v-card-title class="subscription-page__title">
+                        OPML 导入/导出
+                    </v-card-title>
                     <v-card-text>
-                        <v-btn color="primary" @click="downloadOpml">
+                        <v-btn
+                            color="primary"
+                            class="subscription-page__btn"
+                            rounded
+                            size="large"
+                            @click="downloadOpml"
+                        >
                             导出OPML
                         </v-btn>
                         <v-file-input
                             v-model="opmlFile"
                             label="导入OPML文件"
                             accept=".xml,.opml"
+                            class="subscription-page__input"
+                            variant="outlined"
+                            color="primary"
                             @change="importOpml"
                         />
                     </v-card-text>
@@ -142,3 +168,81 @@ async function importOpml() {
 //     // fetchSubscriptions()
 // })
 </script>
+
+<style lang="scss" scoped>
+.subscription-page {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    overflow: hidden;
+
+    &__bg {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        background: linear-gradient(135deg, #e3f0ff 0%, #f9fafe 100%);
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+    }
+
+    &__card {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 600px;
+        padding: 32px 24px;
+        border-radius: 24px;
+        box-shadow: 0 8px 32px 0 rgba(60, 80, 180, 0.10), 0 1.5px 6px 0 rgba(60, 80, 180, 0.06);
+        background: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    &__title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        text-align: left;
+        margin-bottom: 12px;
+        letter-spacing: 1px;
+        color: #234;
+    }
+
+    &__input {
+        margin-bottom: 18px;
+        font-size: 1rem;
+    }
+
+    &__btn {
+        margin-bottom: 12px;
+        font-size: 1.05rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px 0 rgba(60, 80, 180, 0.08);
+    }
+
+    &__alert {
+        margin-bottom: 12px;
+        border-radius: 8px;
+    }
+
+    &__list {
+        margin-top: 8px;
+    }
+
+    @media (max-width: 900px) {
+        &__card {
+            max-width: 98vw;
+            padding: 28px 8vw 24px 8vw;
+            border-radius: 16px;
+        }
+        &__title {
+            font-size: 1.2rem;
+        }
+    }
+}
+</style>

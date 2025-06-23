@@ -1,7 +1,10 @@
 <template>
-    <v-container class="set-password-page">
-        <v-card class="set-password-page__card">
-            <v-card-title>设置新密码</v-card-title>
+    <v-container class="set-password-page" fluid>
+        <div class="set-password-page__bg" />
+        <v-card class="set-password-page__card" elevation="12">
+            <v-card-title class="set-password-page__title">
+                设置新密码
+            </v-card-title>
             <v-card-text>
                 <v-form
                     ref="form"
@@ -15,6 +18,9 @@
                         type="password"
                         prepend-icon="mdi-lock"
                         class="set-password-page__input"
+                        variant="outlined"
+                        density="comfortable"
+                        color="primary"
                         required
                     />
                     <v-text-field
@@ -24,6 +30,9 @@
                         type="password"
                         prepend-icon="mdi-lock-check"
                         class="set-password-page__input"
+                        variant="outlined"
+                        density="comfortable"
+                        color="primary"
                         required
                     />
                     <v-btn
@@ -32,16 +41,18 @@
                         :loading="loading"
                         class="set-password-page__btn"
                         block
+                        size="large"
+                        rounded
                     >
                         设置密码
                     </v-btn>
-                    <!-- 移除本地 v-snackbar -->
                 </v-form>
-                <v-divider class="my-4" />
+                <v-divider class="set-password-page__divider" />
                 <v-btn
                     variant="text"
                     to="/login"
                     block
+                    class="set-password-page__text-link"
                 >
                     返回登录
                 </v-btn>
@@ -53,7 +64,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { authClient } from '~/lib/auth-client'
+import { authClient } from '@/lib/auth-client'
 import { useGlobalSnackbar } from '@/composables/use-global-snackbar'
 
 const route = useRoute()
@@ -104,23 +115,88 @@ async function onSetPassword() {
 
 <style lang="scss" scoped>
 .set-password-page {
+    position: relative;
+    min-height: 100vh;
     display: flex;
-    justify-content: center;
     align-items: center;
-    min-height: 80vh;
+    justify-content: center;
+    overflow: hidden;
+
+    &__bg {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        background: linear-gradient(135deg, #e3f0ff 0%, #f9fafe 100%);
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+    }
 
     &__card {
+        position: relative;
+        z-index: 1;
         width: 100%;
-        max-width: 400px;
-        padding: 32px 24px;
+        max-width: 420px;
+        padding: 40px 32px 32px 32px;
+        border-radius: 24px;
+        box-shadow: 0 8px 32px 0 rgba(60, 80, 180, 0.10), 0 1.5px 6px 0 rgba(60, 80, 180, 0.06);
+        background: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    &__title {
+        font-size: 2rem;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 12px;
+        letter-spacing: 1px;
+        color: #234;
     }
 
     &__input {
-        margin-bottom: 16px;
+        margin-bottom: 20px;
+        font-size: 1rem;
     }
 
     &__btn {
         margin-top: 8px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px 0 rgba(60, 80, 180, 0.08);
+    }
+
+    &__divider {
+        margin: 28px 0 18px 0;
+        border-color: #e3e8f0;
+    }
+
+    &__text-link {
+        color: #8a94a6;
+        font-size: 0.98rem;
+        text-align: center;
+        text-decoration: none;
+        margin: 0 0 2px 0;
+        transition: color 0.2s;
+        font-weight: 500;
+        &:hover {
+            color: #3b5bfd;
+            text-decoration: underline;
+        }
+    }
+
+    @media (max-width: 600px) {
+        &__card {
+            max-width: 98vw;
+            padding: 28px 8vw 24px 8vw;
+            border-radius: 16px;
+        }
+        &__title {
+            font-size: 1.4rem;
+        }
     }
 }
 </style>
