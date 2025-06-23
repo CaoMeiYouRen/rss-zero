@@ -1,7 +1,7 @@
 /**
  * Snowflake ID 生成器。
- * 生成唯一的 64 位 ID，每个 ID 包含时间戳、机器 ID 和序列号。
- *
+ * 生成唯一的 ID，每个 ID 包含时间戳、机器 ID 和序列号。
+ * ID 总位数为 70 位，转换为十六进制字符串格式。
  * @author CaoMeiYouRen
  * @date 2025-06-21
  * @export
@@ -30,7 +30,7 @@ export class Snowflake {
 
     /**
      * 生成一个唯一的 Snowflake ID。
-     * ID 格式为 64 位整数，包含时间戳、机器 ID 和序列号。
+     * ID 包含时间戳、机器 ID 和序列号。
      *
      * @returns {string} 生成的 Snowflake ID，十六进制字符串格式
      */
@@ -48,11 +48,13 @@ export class Snowflake {
         }
 
         this.lastTimestamp = timestamp
-
-        const id = (BigInt(timestamp) & BigInt(0x1FFFFFFFFFF)) << BigInt(22) |
+        // 时间戳 48 位掩码，机器 ID 10 位，序列号 12 位，共 70 位
+        // 生成的 ID 是一个 64 位整数，转换为十六进制
+        // '0x1FFFFFFFFFF'
+        const id = (BigInt(timestamp) & BigInt('0xFFFFFFFFFFFF')) << BigInt(22) |
             (BigInt(this.machineId) & BigInt(0x3FF)) << BigInt(12) |
             BigInt(this.sequence) & BigInt(0xFFF)
-        return id.toString(16)
+        return id.toString(16) // .padStart(18, '0') // 18 是 70 位二进制转16进制的长度
     }
 }
 
