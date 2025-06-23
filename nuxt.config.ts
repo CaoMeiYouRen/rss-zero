@@ -2,7 +2,7 @@
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 export default defineNuxtConfig({
     compatibilityDate: '2025-03-15',
-    devtools: { enabled: true },
+    devtools: { enabled: false },
     devServer: {
         port: 3000,
     },
