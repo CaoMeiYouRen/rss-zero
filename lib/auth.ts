@@ -99,7 +99,7 @@ export const auth = betterAuth({
             onLinkAccount: async ({ anonymousUser, newUser }) => {
                 // 执行操作，如将购物车项目从匿名用户移动到新用户
                 // console.log('Linking anonymous user to new user:', anonymousUser, newUser)
-                // newUser.session = anonymousUser.session // 例如，保持会话
+                // 手动将匿名用户的数据关联到新用户
 
             },
         }),

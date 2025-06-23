@@ -33,6 +33,7 @@
     "nuxt": "^3.17.5",
     "p-queue": "^8.1.0",
     "pg": "^8.16.2",
+    "pinia": "^3.0.3",
     "push-all-in-one": "^4.4.3",
     "reflect-metadata": "^0.2.2",
     "typeorm": "^0.3.25",
