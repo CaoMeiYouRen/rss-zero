@@ -1,5 +1,6 @@
 <template>
     <NuxtLayout>
+        <GlobalSnackbar />
         <Toast />
         <v-app>
             <NuxtPage />

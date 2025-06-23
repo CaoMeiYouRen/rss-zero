@@ -34,6 +34,7 @@
                 >
                     返回登录
                 </v-btn>
+                <!-- 移除本地 v-snackbar -->
             </v-card-text>
         </v-card>
     </v-container>
@@ -41,10 +42,10 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useNuxtApp } from '#app'
-import { authClient } from '~/lib/auth-client'
+import { authClient } from '@/lib/auth-client'
+import { useGlobalSnackbar } from '@/composables/use-global-snackbar'
 
-const { $fetch } = useNuxtApp()
+const { showSnackbar } = useGlobalSnackbar()
 const valid = ref(false)
 const loading = ref(false)
 const email = ref('')
@@ -65,12 +66,12 @@ async function onReset() {
             redirectTo: '/reset-password',
         })
         if (error) {
-            alert(error.message || '发送失败')
+            showSnackbar(error.message || '发送失败', 'error')
         } else {
-            alert('重置邮件已发送，请查收邮箱')
+            showSnackbar('重置邮件已发送，请查收邮箱', 'success')
         }
     } catch (e: any) {
-        alert(e?.message || '发送失败')
+        showSnackbar(e?.message || '发送失败', 'error')
     } finally {
         loading.value = false
     }

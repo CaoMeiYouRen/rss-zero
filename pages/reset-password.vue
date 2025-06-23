@@ -35,6 +35,7 @@
                     >
                         设置密码
                     </v-btn>
+                    <!-- 移除本地 v-snackbar -->
                 </v-form>
                 <v-divider class="my-4" />
                 <v-btn
@@ -52,12 +53,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useNuxtApp } from '#app'
 import { authClient } from '~/lib/auth-client'
+import { useGlobalSnackbar } from '@/composables/use-global-snackbar'
 
 const route = useRoute()
 const router = useRouter()
-const { $fetch } = useNuxtApp()
+const { showSnackbar } = useGlobalSnackbar()
 
 const valid = ref(false)
 const loading = ref(false)
@@ -74,7 +75,7 @@ async function onSetPassword() {
         return
     }
     if (password.value !== confirmPassword.value) {
-        alert('两次密码不一致')
+        showSnackbar('两次密码不一致', 'error')
         return
     }
     loading.value = true
@@ -88,13 +89,13 @@ async function onSetPassword() {
             token,
         })
         if (error) {
-            alert(error.message || '设置失败')
+            showSnackbar(error.message || '设置失败', 'error')
         } else {
-            alert('密码设置成功，请登录')
+            showSnackbar('密码设置成功，请登录', 'success')
             router.push('/login')
         }
     } catch (e: any) {
-        alert(e?.message || '设置失败')
+        showSnackbar(e?.message || '设置失败', 'error')
     } finally {
         loading.value = false
     }

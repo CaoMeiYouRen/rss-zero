@@ -68,11 +68,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useNuxtApp } from '#app'
-import { authClient } from '~/lib/auth-client'
+import { authClient } from '@/lib/auth-client'
+import { useGlobalSnackbar } from '@/composables/use-global-snackbar'
 
 const router = useRouter()
-const { $fetch } = useNuxtApp()
+const { showSnackbar } = useGlobalSnackbar()
 
 const valid = ref(false)
 const loading = ref(false)
@@ -95,7 +95,7 @@ async function onRegister() {
         return
     }
     if (registerData.value.password !== registerData.value.confirmPassword) {
-        alert('两次密码不一致')
+        showSnackbar('两次密码不一致', 'error')
         return
     }
     loading.value = true
@@ -106,13 +106,13 @@ async function onRegister() {
             name: registerData.value.username,
         })
         if (error) {
-            alert(error.message || '注册失败')
+            showSnackbar(error.message || '注册失败', 'error')
         } else {
-            alert('注册成功，请前往邮箱验证')
+            showSnackbar('注册成功，请前往邮箱验证', 'success')
             router.push('/login')
         }
     } catch (e: any) {
-        alert(e?.message || '注册失败')
+        showSnackbar(e?.message || '注册失败', 'error')
     } finally {
         loading.value = false
     }
