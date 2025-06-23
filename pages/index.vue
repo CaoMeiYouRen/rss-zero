@@ -32,19 +32,27 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { authClient } from '@/lib/auth-client'
 
-onMounted(async () => {
-    // 匿名自动登录
-    const session = authClient.useSession()
-    if (!session.value.data?.user?.id) {
-        const user = await authClient.signIn.anonymous()
-        console.log(user)
-    } else {
+const session = authClient.useSession()
+
+watch(
+    () => session.value.isPending || session.value.isRefetching,
+    async (status) => {
+        if (status) { // 如果 session 正在加载中，则不执行后续逻辑
+            return
+        }
+        // session 加载完成后再判断
+        if (!session.value.data?.user?.id) { // 如果用户未登录，则执行匿名登录
+            const user = await authClient.signIn.anonymous()
+            console.log(user)
+            return
+        }
         console.log(session.value.data?.user)
-    }
-})
+    },
+    { immediate: true }, // 立即执行
+)
 </script>
 
 <style scoped lang="scss">
