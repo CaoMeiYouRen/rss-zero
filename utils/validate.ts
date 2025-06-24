@@ -1,3 +1,6 @@
+import $isEmail from 'validator/es/lib/isEmail'
+import isMobilePhone from 'validator/es/lib/isMobilePhone'
+
 export function validateUrl(url: string): boolean {
     try {
         const u = new URL(url)
@@ -13,14 +16,28 @@ export function isUsername(str: string): boolean {
     return /^[a-zA-Z0-9_-]{3,36}$/.test(str)
 }
 
-// 判断是否为邮箱
+// 判断是否为邮箱。
+// 使用严格模式，要求邮箱格式正确
 export function isEmail(str: string) {
-    return /.+@.+\..+/.test(str)
+    return $isEmail(str, {
+        allow_utf8_local_part: true, // 允许本地部分使用 UTF-8 字符
+        require_tld: true, // 要求顶级域名
+        ignore_max_length: false, // 不忽略最大长度限制
+        allow_ip_domain: false, // 不允许 IP 地址作为域名
+        domain_specific_validation: false, // 不启用特定域名的额外验证
+        allow_underscores: false, // 不允许下划线
+    })
 }
 
-// 判断是否为手机号（中国大陆 11 位手机号）
+// 判断是否为手机号。
+// 使用严格模式，要求手机号格式正确
+// 这里使用 'any' 作为语言选项，允许所有国家的手机号格式
+// 如果需要特定国家的手机号格式，可以替换 'any' 为具体的国家
+// 例如 'zh-CN' 表示中国手机号格式
 export function isPhone(str: string) {
-    return /^1[3-9]\d{9}$/.test(str)
+    return isMobilePhone(str, 'any', {
+        strictMode: true, // 严格模式，要求手机号格式正确
+    })
 }
 
 // 用户名验证函数
