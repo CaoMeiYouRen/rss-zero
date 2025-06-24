@@ -23,6 +23,17 @@
                         required
                     />
                     <v-text-field
+                        v-model="registerData.nickname"
+                        :rules="[rules.required, rules.nickname]"
+                        label="昵称"
+                        prepend-icon="mdi-account-circle"
+                        class="register-page__input"
+                        variant="outlined"
+                        density="comfortable"
+                        color="primary"
+                        required
+                    />
+                    <v-text-field
                         v-model="registerData.email"
                         :rules="[rules.required, rules.email]"
                         label="邮箱"
@@ -96,6 +107,7 @@ const valid = ref(false)
 const loading = ref(false)
 const registerData = ref({
     username: '',
+    nickname: '', // 新增昵称字段
     email: '',
     password: '',
     confirmPassword: '',
@@ -106,6 +118,7 @@ const rules = {
     email: (v: string) => /.+@.+\..+/.test(v) || '邮箱格式不正确',
     password: (v: string) => v.length >= 6 || '密码至少6位',
     username: (v: string) => /^[a-zA-Z0-9_-]{3,36}$/.test(v) || '用户名格式不正确',
+    nickname: (v: string) => v && v.length >= 2 && v.length <= 36 || '昵称需为2-36个字符',
 }
 
 async function onRegister() {
@@ -123,7 +136,7 @@ async function onRegister() {
             password: registerData.value.password,
             name: registerData.value.username,
             username: registerData.value.username,
-            // displayUsername: registerData.value.username,
+            displayUsername: registerData.value.nickname, // 使用昵称作为显示用户名
         })
         if (error) {
             showSnackbar(error.message || '注册失败', 'error')
