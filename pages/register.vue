@@ -99,6 +99,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { authClient } from '@/lib/auth-client'
 import { useGlobalSnackbar } from '@/composables/use-global-snackbar'
+import { isEmail, isPhone, isUsername } from '@/utils/validate'
 
 const router = useRouter()
 const { showSnackbar } = useGlobalSnackbar()
@@ -115,16 +116,16 @@ const registerData = ref({
 
 const rules = {
     required: (v: string) => !!v || '必填项',
-    email: (v: string) => /.+@.+\..+/.test(v) || '邮箱格式不正确',
+    email: (v: string) => isEmail(v) || '邮箱格式不正确',
     password: (v: string) => v.length >= 6 || '密码至少6位',
     username: (v: string) => {
-        if (!/^[a-zA-Z0-9_-]{3,36}$/.test(v)) {
+        if (!isUsername(v)) {
             return '用户名格式不正确'
         }
-        if (/.+@.+\..+/.test(v)) {
+        if (isEmail(v)) {
             return '用户名不能为邮箱格式'
         }
-        if (/^1[3-9]\d{9}$/.test(v)) {
+        if (isPhone(v)) {
             return '用户名不能为手机号格式'
         }
         return true

@@ -113,6 +113,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { authClient } from '@/lib/auth-client'
 import { useGlobalSnackbar } from '@/composables/use-global-snackbar'
+import { isEmail } from '@/utils/validate'
 
 const router = useRouter()
 const { showSnackbar } = useGlobalSnackbar()
@@ -127,16 +128,7 @@ const magicData = ref({ email: '' })
 
 const rules = {
     required: (v: string) => !!v || '必填项',
-    email: (v: string) => /.+@.+\..+/.test(v) || '邮箱格式不正确',
-}
-
-// 判断是否为邮箱
-function isEmail(str: string) {
-    return /.+@.+\..+/.test(str)
-}
-// 判断是否为手机号（中国大陆 11 位手机号）
-function isPhone(str: string) {
-    return /^1[3-9]\d{9}$/.test(str)
+    email: (v: string) => isEmail(v) || '邮箱格式不正确',
 }
 
 async function onLogin() {

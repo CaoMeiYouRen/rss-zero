@@ -11,6 +11,7 @@ import { typeormAdapter } from '../server/database/typeorm-adapter'
 import { sendEmail } from '../server/utils/email'
 import { snowflake } from '../server/utils/snowflake'
 import { dataSource } from '../server/database'
+import { usernameValidator } from '@/utils/validate'
 
 // Redis 二级存储配置（仅当有配置时启用）
 let secondaryStorage: SecondaryStorage | null = null
@@ -99,18 +100,7 @@ export const auth = betterAuth({
         username({
             minUsernameLength: 3, // 最小用户名长度
             maxUsernameLength: 36, // 最大用户名长度
-            usernameValidator: (name) => {
-                if (!/^[a-zA-Z0-9_-]+$/.test(name)) {
-                    return false
-                }
-                if (/.+@.+\..+/.test(name)) {
-                    return false
-                } // 禁止邮箱格式
-                if (/^1[3-9]\d{9}$/.test(name)) {
-                    return false
-                } // 禁止手机号格式
-                return true
-            },
+            usernameValidator,
         }), // 支持用户名登录
         anonymous({
             // 支持匿名登录
