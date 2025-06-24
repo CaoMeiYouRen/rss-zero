@@ -23,7 +23,7 @@
                         required
                     >
                         <v-tooltip activator="parent" location="bottom">
-                            请输入用户名（不能为邮箱或手机号格式）
+                            4-36个字符，仅支持字母、数字、下划线，不能为邮箱或手机号格式。用户名将用于登录。
                         </v-tooltip>
                     </v-text-field>
                     <v-text-field
@@ -38,7 +38,7 @@
                         required
                     >
                         <v-tooltip activator="parent" location="bottom">
-                            请输入昵称（2-36个字符）
+                            2-36个字符，支持中英文、数字和常用符号。昵称将用于个人资料显示。
                         </v-tooltip>
                     </v-text-field>
                     <v-text-field
@@ -53,7 +53,7 @@
                         required
                     >
                         <v-tooltip activator="parent" location="bottom">
-                            请输入有效的邮箱地址
+                            邮箱将用于接收验证邮件和密码重置链接，请确保邮箱有效。
                         </v-tooltip>
                     </v-text-field>
                     <v-text-field
@@ -131,7 +131,7 @@ const valid = ref(false)
 const loading = ref(false)
 const registerData = ref({
     username: '',
-    nickname: '', // 新增昵称字段
+    nickname: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -140,7 +140,7 @@ const registerData = ref({
 const rules = {
     required: (v: string) => !!v || '必填项',
     email: (v: string) => isEmail(v) || '邮箱格式不正确',
-    password: (v: string) => v.length >= 6 || '密码至少6位',
+    password: (v: string) => v.length >= 6 && v.length <= 64 || '密码至少6位', // TODO: 可以添加更复杂的密码规则
     username: (v: string) => {
         if (!isUsername(v)) {
             return '用户名格式不正确'
@@ -261,6 +261,15 @@ async function onRegister() {
             color: #3b5bfd;
             text-decoration: underline;
         }
+    }
+
+    &__field-tip {
+        font-size: 0.88rem;
+        color: #8a94a6;
+        margin-top: -40px;
+        margin-bottom: 12px;
+        margin-left: 2px;
+        line-height: 1.5;
     }
 
     @media (max-width: 600px) {

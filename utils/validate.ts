@@ -11,9 +11,9 @@ export function validateUrl(url: string): boolean {
 }
 
 // 判断是否为合法的用户名
-// 用户名只能包含字母、数字、下划线和连字符，长度在 3 到 36 个字符之间
+// 用户名只能包含字母、数字、下划线和连字符，长度在 4 到 36 个字符之间
 export function isUsername(str: string): boolean {
-    return /^[a-zA-Z0-9_-]{3,36}$/.test(str)
+    return /^[a-zA-Z0-9_-]{4,36}$/.test(str)
 }
 
 // 判断是否为邮箱。
