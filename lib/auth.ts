@@ -1,5 +1,11 @@
 import { betterAuth, type SecondaryStorage } from 'better-auth'
-import { username, anonymous, magicLink, emailOTP, openAPI } from 'better-auth/plugins'
+import {
+    username,
+    anonymous,
+    magicLink,
+    emailOTP,
+    openAPI,
+} from 'better-auth/plugins'
 import Redis from 'ioredis'
 import { typeormAdapter } from '../server/database/typeorm-adapter'
 import { sendEmail } from '../server/utils/email'
@@ -33,7 +39,8 @@ export const auth = betterAuth({
     // 使用 TypeORM 适配器连接到 PostgreSQL 数据库
     database: typeormAdapter(dataSource),
     advanced: {
-        database: {  // 自定义 ID 生成逻辑
+        database: {
+            // 自定义 ID 生成逻辑
             // 通过雪花算法 生成一个 16 进制的 ID
             generateId: (options) => snowflake.generateId(),
         },
@@ -92,18 +99,31 @@ export const auth = betterAuth({
         username({
             minUsernameLength: 3, // 最小用户名长度
             maxUsernameLength: 36, // 最大用户名长度
-            usernameValidator: (name) => /^[a-zA-Z0-9_-]+$/.test(name), // 用户名只能包含字母、数字、下划线、连字符
+            usernameValidator: (name) => {
+                if (!/^[a-zA-Z0-9_-]+$/.test(name)) {
+                    return false
+                }
+                if (/.+@.+\..+/.test(name)) {
+                    return false
+                } // 禁止邮箱格式
+                if (/^1[3-9]\d{9}$/.test(name)) {
+                    return false
+                } // 禁止手机号格式
+                return true
+            },
         }), // 支持用户名登录
-        anonymous({ // 支持匿名登录
-            emailDomainName: process.env.ANONYMOUS_EMAIL_DOMAIN_NAME || 'anonymous.com', // 匿名用户的默认电子邮件域名
+        anonymous({
+            // 支持匿名登录
+            emailDomainName:
+                process.env.ANONYMOUS_EMAIL_DOMAIN_NAME || 'anonymous.com', // 匿名用户的默认电子邮件域名
             onLinkAccount: async ({ anonymousUser, newUser }) => {
                 // 执行操作，如将购物车项目从匿名用户移动到新用户
                 // console.log('Linking anonymous user to new user:', anonymousUser, newUser)
                 // 手动将匿名用户的数据关联到新用户
-
             },
         }),
-        magicLink({ // 支持一次性链接登录
+        magicLink({
+            // 支持一次性链接登录
             sendMagicLink: async ({ email, token, url }, request) => {
                 await sendEmail({
                     to: email,
@@ -112,7 +132,8 @@ export const auth = betterAuth({
                 })
             },
         }),
-        emailOTP({ // 支持电子邮件 OTP 登录
+        emailOTP({
+            // 支持电子邮件 OTP 登录
             async sendVerificationOTP({ email, otp, type }) {
                 await sendEmail({
                     to: email,

@@ -117,7 +117,18 @@ const rules = {
     required: (v: string) => !!v || '必填项',
     email: (v: string) => /.+@.+\..+/.test(v) || '邮箱格式不正确',
     password: (v: string) => v.length >= 6 || '密码至少6位',
-    username: (v: string) => /^[a-zA-Z0-9_-]{3,36}$/.test(v) || '用户名格式不正确',
+    username: (v: string) => {
+        if (!/^[a-zA-Z0-9_-]{3,36}$/.test(v)) {
+            return '用户名格式不正确'
+        }
+        if (/.+@.+\..+/.test(v)) {
+            return '用户名不能为邮箱格式'
+        }
+        if (/^1[3-9]\d{9}$/.test(v)) {
+            return '用户名不能为手机号格式'
+        }
+        return true
+    },
     nickname: (v: string) => v && v.length >= 2 && v.length <= 36 || '昵称需为2-36个字符',
 }
 
@@ -221,6 +232,7 @@ async function onRegister() {
         margin: 0 0 2px 0;
         transition: color 0.2s;
         font-weight: 500;
+
         &:hover {
             color: #3b5bfd;
             text-decoration: underline;
@@ -233,6 +245,7 @@ async function onRegister() {
             padding: 28px 8vw 24px 8vw;
             border-radius: 16px;
         }
+
         &__title {
             font-size: 1.4rem;
         }

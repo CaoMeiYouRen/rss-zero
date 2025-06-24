@@ -134,6 +134,10 @@ const rules = {
 function isEmail(str: string) {
     return /.+@.+\..+/.test(str)
 }
+// 判断是否为手机号（中国大陆 11 位手机号）
+function isPhone(str: string) {
+    return /^1[3-9]\d{9}$/.test(str)
+}
 
 async function onLogin() {
     if (!valid.value) {
@@ -142,6 +146,13 @@ async function onLogin() {
     loading.value = true
     try {
         let data; let error
+        // if (isPhone(loginData.value.identifier)) {
+        // 手机号登录（如后端支持）
+        // ({ data, error } = await authClient.signIn.phone?.({
+        //     phone: loginData.value.identifier,
+        //     password: loginData.value.password,
+        // }) || {})
+        // } else
         if (isEmail(loginData.value.identifier)) {
             // 邮箱登录
             ({ data, error } = await authClient.signIn.email({
@@ -261,6 +272,7 @@ async function onMagicLinkLogin() {
         color: #fff !important;
         box-shadow: 0 2px 8px 0 rgba(60, 80, 180, 0.08);
         transition: background 0.2s;
+
         &:hover {
             background: linear-gradient(90deg, #2a47c6 0%, #3b5bfd 100%);
         }
@@ -283,6 +295,7 @@ async function onMagicLinkLogin() {
         margin: 0 0 2px 0;
         transition: color 0.2s;
         font-weight: 500;
+
         &:hover {
             color: #3b5bfd;
             text-decoration: underline;
@@ -315,6 +328,7 @@ async function onMagicLinkLogin() {
             padding: 28px 8vw 24px 8vw;
             border-radius: 16px;
         }
+
         &__title {
             font-size: 1.4rem;
         }
