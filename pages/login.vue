@@ -21,7 +21,11 @@
                         density="comfortable"
                         color="primary"
                         required
-                    />
+                    >
+                        <v-tooltip activator="parent" location="bottom">
+                            请输入邮箱或用户名
+                        </v-tooltip>
+                    </v-text-field>
                     <v-text-field
                         v-model="loginData.password"
                         :rules="[rules.required]"
@@ -33,7 +37,11 @@
                         density="comfortable"
                         color="primary"
                         required
-                    />
+                    >
+                        <v-tooltip activator="parent" location="bottom">
+                            请输入密码
+                        </v-tooltip>
+                    </v-text-field>
                     <v-btn
                         type="submit"
                         color="primary"
@@ -44,6 +52,9 @@
                         rounded
                     >
                         登录
+                        <v-tooltip activator="parent" location="bottom">
+                            登录到 RSS Zero
+                        </v-tooltip>
                     </v-btn>
                 </v-form>
                 <v-divider class="login-page__divider" />
@@ -57,6 +68,9 @@
                     @click="showMagicLink = true"
                 >
                     邮箱一键登录
+                    <v-tooltip activator="parent" location="bottom">
+                        通过邮箱链接一键登录
+                    </v-tooltip>
                 </v-btn>
                 <div class="login-page__links">
                     <NuxtLink to="/forget-password" class="login-page__text-link">
@@ -87,7 +101,11 @@
                                     color="primary"
                                     class="login-page__magic-input"
                                     required
-                                />
+                                >
+                                    <v-tooltip activator="parent" location="bottom">
+                                        请输入用于接收登录链接的邮箱
+                                    </v-tooltip>
+                                </v-text-field>
                                 <v-btn
                                     type="submit"
                                     color="primary"
@@ -98,6 +116,9 @@
                                     prepend-icon="mdi-send"
                                 >
                                     发送登录链接
+                                    <v-tooltip activator="parent" location="bottom">
+                                        向邮箱发送一次性登录链接
+                                    </v-tooltip>
                                 </v-btn>
                             </v-form>
                         </v-card-text>

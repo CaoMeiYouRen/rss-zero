@@ -21,7 +21,11 @@
                         density="comfortable"
                         color="primary"
                         required
-                    />
+                    >
+                        <v-tooltip activator="parent" location="bottom">
+                            请输入用户名（不能为邮箱或手机号格式）
+                        </v-tooltip>
+                    </v-text-field>
                     <v-text-field
                         v-model="registerData.nickname"
                         :rules="[rules.required, rules.nickname]"
@@ -32,7 +36,11 @@
                         density="comfortable"
                         color="primary"
                         required
-                    />
+                    >
+                        <v-tooltip activator="parent" location="bottom">
+                            请输入昵称（2-36个字符）
+                        </v-tooltip>
+                    </v-text-field>
                     <v-text-field
                         v-model="registerData.email"
                         :rules="[rules.required, rules.email]"
@@ -43,7 +51,11 @@
                         density="comfortable"
                         color="primary"
                         required
-                    />
+                    >
+                        <v-tooltip activator="parent" location="bottom">
+                            请输入有效的邮箱地址
+                        </v-tooltip>
+                    </v-text-field>
                     <v-text-field
                         v-model="registerData.password"
                         :rules="[rules.required, rules.password]"
@@ -55,7 +67,11 @@
                         density="comfortable"
                         color="primary"
                         required
-                    />
+                    >
+                        <v-tooltip activator="parent" location="bottom">
+                            密码至少6位
+                        </v-tooltip>
+                    </v-text-field>
                     <v-text-field
                         v-model="registerData.confirmPassword"
                         :rules="[rules.required, v => v === registerData.password || '两次密码不一致']"
@@ -67,7 +83,11 @@
                         density="comfortable"
                         color="primary"
                         required
-                    />
+                    >
+                        <v-tooltip activator="parent" location="bottom">
+                            请再次输入密码
+                        </v-tooltip>
+                    </v-text-field>
                     <v-btn
                         type="submit"
                         color="primary"
@@ -78,6 +98,9 @@
                         rounded
                     >
                         注册
+                        <v-tooltip activator="parent" location="bottom">
+                            注册新账号
+                        </v-tooltip>
                     </v-btn>
                 </v-form>
                 <v-divider class="register-page__divider" />

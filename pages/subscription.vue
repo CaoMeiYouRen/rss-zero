@@ -22,7 +22,11 @@
                                 density="comfortable"
                                 color="primary"
                                 required
-                            />
+                            >
+                                <v-tooltip activator="parent" location="bottom">
+                                    请输入有效的 RSS 源链接
+                                </v-tooltip>
+                            </v-text-field>
                             <v-btn
                                 type="submit"
                                 color="primary"
@@ -32,6 +36,9 @@
                                 size="large"
                             >
                                 添加
+                                <v-tooltip activator="parent" location="bottom">
+                                    添加新的 RSS 订阅源
+                                </v-tooltip>
                             </v-btn>
                         </v-form>
                         <v-alert
@@ -51,6 +58,9 @@
                                 <v-list-item-action>
                                     <v-btn icon @click="removeSubscription(item.id)">
                                         <v-icon>mdi-delete</v-icon>
+                                        <v-tooltip activator="parent" location="bottom">
+                                            删除该订阅
+                                        </v-tooltip>
                                     </v-btn>
                                 </v-list-item-action>
                             </v-list-item>
@@ -70,6 +80,9 @@
                             @click="downloadOpml"
                         >
                             导出OPML
+                            <v-tooltip activator="parent" location="bottom">
+                                导出所有订阅为 OPML 文件
+                            </v-tooltip>
                         </v-btn>
                         <v-file-input
                             v-model="opmlFile"
@@ -79,7 +92,11 @@
                             variant="outlined"
                             color="primary"
                             @change="importOpml"
-                        />
+                        >
+                            <v-tooltip activator="parent" location="bottom">
+                                选择 OPML 文件导入订阅
+                            </v-tooltip>
+                        </v-file-input>
                     </v-card-text>
                 </v-card>
             </v-col>
@@ -102,7 +119,7 @@ const urlRule = (v: string) => validUrl.value || '请输入有效的URL'
 
 async function fetchSubscriptions() {
     const { data } = await useFetch('/api/subscription')
-    subscriptions.value = data.value || []
+    // subscriptions.value = data.value || []
 }
 
 async function addSubscription() {
@@ -116,8 +133,6 @@ async function addSubscription() {
     })
     if (err.value) {
         error.value = err.value.message
-    } else if (data.value?.error) {
-        error.value = data.value.error
     } else {
         newUrl.value = ''
         fetchSubscriptions()

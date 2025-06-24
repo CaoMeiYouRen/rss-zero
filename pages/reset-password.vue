@@ -22,7 +22,11 @@
                         density="comfortable"
                         color="primary"
                         required
-                    />
+                    >
+                        <v-tooltip activator="parent" location="bottom">
+                            密码至少6位
+                        </v-tooltip>
+                    </v-text-field>
                     <v-text-field
                         v-model="confirmPassword"
                         :rules="[rules.required, v => v === password || '两次密码不一致']"
@@ -34,7 +38,11 @@
                         density="comfortable"
                         color="primary"
                         required
-                    />
+                    >
+                        <v-tooltip activator="parent" location="bottom">
+                            请再次输入新密码
+                        </v-tooltip>
+                    </v-text-field>
                     <v-btn
                         type="submit"
                         color="primary"
@@ -45,6 +53,9 @@
                         rounded
                     >
                         设置密码
+                        <v-tooltip activator="parent" location="bottom">
+                            保存新密码并登录
+                        </v-tooltip>
                     </v-btn>
                 </v-form>
                 <v-divider class="set-password-page__divider" />

@@ -21,7 +21,11 @@
                         density="comfortable"
                         color="primary"
                         required
-                    />
+                    >
+                        <v-tooltip activator="parent" location="bottom">
+                            请输入注册时使用的邮箱
+                        </v-tooltip>
+                    </v-text-field>
                     <v-btn
                         type="submit"
                         color="primary"
@@ -32,6 +36,9 @@
                         rounded
                     >
                         发送重置邮件
+                        <v-tooltip activator="parent" location="bottom">
+                            向邮箱发送重置密码链接
+                        </v-tooltip>
                     </v-btn>
                 </v-form>
                 <v-divider class="reset-password-page__divider" />
