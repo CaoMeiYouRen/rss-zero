@@ -122,6 +122,8 @@ async function onRegister() {
             email: registerData.value.email,
             password: registerData.value.password,
             name: registerData.value.username,
+            username: registerData.value.username,
+            // displayUsername: registerData.value.username,
         })
         if (error) {
             showSnackbar(error.message || '注册失败', 'error')
