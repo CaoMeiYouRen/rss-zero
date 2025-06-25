@@ -46,4 +46,16 @@ export class User extends BaseEntity {
     @Column('boolean', { default: false })
     isAnonymous: boolean
 
+    /**
+     * 用户手机号
+     */
+    @Column('varchar', { length: 64, nullable: true })
+    phoneNumber: string
+
+    /**
+     * 用户手机号是否已验证
+     */
+    @Column('boolean', { default: false })
+    phoneNumberVerified: boolean
+
 }

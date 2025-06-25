@@ -5,6 +5,7 @@ import {
     magicLink,
     emailOTP,
     openAPI,
+    phoneNumber as $phoneNumber,
 } from 'better-auth/plugins'
 import Redis from 'ioredis'
 import { typeormAdapter } from '../server/database/typeorm-adapter'
@@ -130,6 +131,30 @@ export const auth = betterAuth({
                     subject: '您的一次性验证码',
                     text: `您的验证码是：${otp}`,
                 })
+            },
+        }),
+        $phoneNumber({
+            otpLength: 6, // OTP 验证码长度
+            expiresIn: 300, // OTP 验证码有效期（秒）
+            allowedAttempts: 3, // 允许的 OTP 验证尝试次数
+            // requireVerification: true, // 是否要求手机号码验证，启用后，用户在验证手机号码之前无法使用手机号码登录。
+            sendOTP: ({ phoneNumber, code }, request) => {
+                // TODO：实现通过短信发送OTP验证码
+                throw new Error(
+                    '未实现短信发送功能，请切换到其他登录方式或实现短信发送功能',
+                )
+            },
+            callbackOnVerification: async ({ phoneNumber, user }, request) => {
+                // 实现手机号码验证后的回调
+            },
+            // 验证手机号码格式
+            phoneNumberValidator: (phoneNumber) => isPhone(phoneNumber),
+            signUpOnVerification: {
+                // 使用雪花算法生成临时电子邮件地址
+                // 生成的电子邮件地址格式为：<snowflake_id>@example.com
+                getTempEmail: (phoneNumber) => `${snowflake.generateId()}@${process.env.ANONYMOUS_EMAIL_DOMAIN_NAME || 'example.com'
+                    }`,
+                getTempName: (phoneNumber) => `user-${snowflake.generateId()}`, // 使用雪花算法生成临时用户名
             },
         }),
         openAPI({
