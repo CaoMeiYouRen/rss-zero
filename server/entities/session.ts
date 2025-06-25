@@ -18,4 +18,10 @@ export class Session extends BaseEntity {
 
     @Column('varchar', { length: 36, nullable: false })
     userId: string
+
+    /**
+     * 正在模拟此会话的管理员的ID
+     */
+    @Column('varchar', { length: 36, nullable: true })
+    impersonatedBy: string
 }

@@ -6,13 +6,14 @@ import {
     emailOTP,
     openAPI,
     phoneNumber as $phoneNumber,
+    admin,
 } from 'better-auth/plugins'
 import Redis from 'ioredis'
 import { typeormAdapter } from '@/server/database/typeorm-adapter'
 import { sendEmail } from '@/server/utils/email'
 import { snowflake } from '@/server/utils/snowflake'
 import { dataSource } from '@/server/database'
-import { usernameValidator } from '@/utils/validate'
+import { usernameValidator, isPhone } from '@/utils/validate'
 import { sendPhoneOtp } from '@/server/utils/phone'
 
 // Redis 二级存储配置（仅当有配置时启用）
@@ -154,6 +155,11 @@ export const auth = betterAuth({
                 getTempName: (phoneNumber) => `user-${snowflake.generateId()}`, // 使用雪花算法生成临时用户名
             },
         }),
+        admin({
+            defaultRole: 'user', // 默认角色为用户
+            adminRoles: ['admin', 'root'], // 管理员角色列表
+            adminUserIds: (process.env.ADMIN_USER_IDS || '').split(',').map((id) => id.trim()).filter(Boolean), // 管理员用户 ID 列表
+        }), // 支持管理员插件
         openAPI({
             disableDefaultReference: process.env.NODE_ENV !== 'development', // 开发环境启用 OpenAPI 插件
         }),

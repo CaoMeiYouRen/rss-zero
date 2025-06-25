@@ -27,6 +27,7 @@ export const dataSource = new DataSource({
     namingStrategy: new SnakeCaseNamingStrategy(),
     // 是否启用实体结果缓存
     cache: false,
+    parseInt8: true, // 解析 bigint 为 number。将 64 位整数（int8）解析为 JavaScript 整数
 })
 
 // 初始化连接（在 app 启动时调用）

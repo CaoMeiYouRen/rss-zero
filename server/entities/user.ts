@@ -58,4 +58,28 @@ export class User extends BaseEntity {
     @Column('boolean', { default: false })
     phoneNumberVerified: boolean
 
+    /**
+     * 用户的角色。默认为 user。管理员为 admin。
+     */
+    @Column('varchar', { length: 32, nullable: true, default: 'user' })
+    role: string
+
+    /**
+     * 是否被禁止
+     */
+    @Column('boolean', { default: false })
+    banned: boolean
+
+    /**
+     * 被禁止的原因
+     */
+    @Column('text', { nullable: true })
+    banReason: string
+
+    /**
+     * 禁止过期时间（Unix 时间戳，秒）
+     */
+    @Column('integer', { nullable: true })
+    banExpires: number
+
 }
