@@ -23,7 +23,7 @@
                         required
                     >
                         <v-tooltip activator="parent" location="bottom">
-                            4-36个字符，仅支持字母、数字、下划线，不能为邮箱或手机号格式。用户名将用于登录。
+                            2-36个字符，仅支持字母、数字、下划线，不能为邮箱或手机号格式。用户名将用于登录。
                         </v-tooltip>
                     </v-text-field>
                     <v-text-field

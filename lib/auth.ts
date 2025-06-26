@@ -113,7 +113,7 @@ export const auth = betterAuth({
     },
     plugins: [
         username({
-            minUsernameLength: 3, // 最小用户名长度
+            minUsernameLength: 2, // 最小用户名长度
             maxUsernameLength: 36, // 最大用户名长度
             usernameValidator,
         }), // 支持用户名登录
