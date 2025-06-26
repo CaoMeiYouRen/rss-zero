@@ -30,13 +30,12 @@ export function isEmail(str: string): boolean {
 }
 
 // 判断是否为手机号。
-// 使用严格模式，要求手机号格式正确
 // 这里使用 'any' 作为语言选项，允许所有国家的手机号格式
 // 如果需要特定国家的手机号格式，可以替换 'any' 为具体的国家
 // 例如 'zh-CN' 表示中国手机号格式
 export function isPhone(str: string): boolean {
     return isMobilePhone(str, 'any', {
-        strictMode: true, // 严格模式，要求手机号格式正确
+        strictMode: false, // 不使用严格模式
     })
 }
 
