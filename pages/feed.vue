@@ -49,22 +49,47 @@
                         >
                             {{ error }}
                         </v-alert>
-                        <v-list class="subscription-page__list">
-                            <v-list-item v-for="item in subscriptions" :key="item.id">
-                                <v-list-item-content>
-                                    <v-list-item-title>{{ item.title || item.url }}</v-list-item-title>
-                                    <v-list-item-subtitle>{{ item.url }}</v-list-item-subtitle>
-                                </v-list-item-content>
-                                <v-list-item-action>
-                                    <v-btn icon @click="removeSubscription(item.id)">
-                                        <v-icon>mdi-delete</v-icon>
-                                        <v-tooltip activator="parent" location="bottom">
-                                            删除该订阅
-                                        </v-tooltip>
-                                    </v-btn>
-                                </v-list-item-action>
-                            </v-list-item>
-                        </v-list>
+                        <v-data-table
+                            v-if="subscriptions.length > 0"
+                            :headers="headers"
+                            :items="subscriptions"
+                            class="subscription-page__table"
+                            item-key="id"
+                            :items-per-page="10"
+                            dense
+                        >
+                            <template #item.title="{item}">
+                                <span>{{ item.title || item.url }}</span>
+                            </template>
+                            <template #item.url="{item}">
+                                <a
+                                    :href="item.siteUrl || item.url"
+                                    target="_blank"
+                                    rel="noopener"
+                                >
+                                    {{ item.url }}
+                                </a>
+                            </template>
+                            <template #item.category="{item}">
+                                <span>{{ item.category || '-' }}</span>
+                            </template>
+                            <template #item.action="{item}">
+                                <v-btn icon @click="removeSubscription(item.id)">
+                                    <v-icon>mdi-delete</v-icon>
+                                    <v-tooltip activator="parent" location="bottom">
+                                        删除该订阅
+                                    </v-tooltip>
+                                </v-btn>
+                            </template>
+                        </v-data-table>
+                        <div v-else class="subscription-page__empty">
+                            <v-icon size="48" color="grey">
+                                mdi-rss-off
+                            </v-icon>
+                            <div class="subscription-page__empty-text">
+                                暂无订阅，快去添加你的第一个 RSS 吧！
+                            </div>
+                        </div>
                     </v-card-text>
                 </v-card>
                 <v-card class="mt-4 subscription-page__card" elevation="12">
@@ -99,6 +124,13 @@
                         </v-file-input>
                     </v-card-text>
                 </v-card>
+                <v-snackbar
+                    v-model="snackbar.show"
+                    :color="snackbar.color"
+                    :timeout="3000"
+                >
+                    {{ snackbar.text }}
+                </v-snackbar>
             </v-col>
         </v-row>
     </v-container>
@@ -113,6 +145,19 @@ const subscriptions = ref<any[]>([])
 const newUrl = ref('')
 const error = ref('')
 const opmlFile = ref<File | null>(null)
+
+const snackbar = ref({
+    show: false,
+    text: '',
+    color: 'success',
+})
+
+const headers = [
+    { text: '名称', value: 'title', align: 'start' as const },
+    { text: '链接', value: 'url' },
+    { text: '分组', value: 'category' },
+    { text: '操作', value: 'action', sortable: false },
+]
 
 const validUrl = computed(() => validateUrl(newUrl.value))
 const urlRule = (v: string) => validUrl.value || '请输入有效的URL'
@@ -144,17 +189,27 @@ async function addSubscription() {
     })
     if (err.value) {
         error.value = err.value.message
+        snackbar.value = { show: true, text: error.value, color: 'error' }
     } else if (data.value && typeof data.value === 'object' && 'error' in data.value) {
         error.value = (data.value as any).error
+        snackbar.value = { show: true, text: error.value, color: 'error' }
     } else {
         newUrl.value = ''
+        snackbar.value = { show: true, text: '添加成功', color: 'success' }
         fetchSubscriptions()
     }
 }
 
 async function removeSubscription(id: string) {
-    await useFetch(`/api/feed?id=${id}`, { method: 'DELETE' })
-    fetchSubscriptions()
+    const { data, error: err } = await useFetch(`/api/feed?id=${id}`, { method: 'DELETE' })
+    const isError = !!(err?.value || data.value && typeof data.value === 'object' && 'error' in data.value)
+    const msg = err?.value?.message || (data.value && typeof data.value === 'object' && 'error' in data.value ? data.value.error : '删除失败')
+    if (isError) {
+        snackbar.value = { show: true, text: msg, color: 'error' }
+    } else {
+        snackbar.value = { show: true, text: '删除成功', color: 'success' }
+        fetchSubscriptions()
+    }
 }
 
 async function downloadOpml() {
@@ -166,6 +221,7 @@ async function downloadOpml() {
     a.download = 'subscriptions.opml'
     a.click()
     window.URL.revokeObjectURL(url)
+    snackbar.value = { show: true, text: 'OPML 导出成功', color: 'success' }
 }
 
 async function importOpml() {
@@ -181,7 +237,9 @@ async function importOpml() {
     const result = await res.json()
     if (result.error) {
         error.value = result.error
+        snackbar.value = { show: true, text: result.error, color: 'error' }
     } else {
+        snackbar.value = { show: true, text: `成功导入 ${result.imported || 0} 个订阅`, color: 'success' }
         fetchSubscriptions()
     }
 }
@@ -252,8 +310,31 @@ onMounted(() => {
         border-radius: 8px;
     }
 
+    &__list-area {
+        margin-top: 8px;
+        min-height: 120px;
+    }
+
     &__list {
         margin-top: 8px;
+    }
+
+    &__empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #999;
+        padding: 32px 0 16px 0;
+        .subscription-page__empty-text {
+            margin-top: 8px;
+            font-size: 1.1rem;
+            color: #888;
+        }
+    }
+
+    &__table {
+        margin-top: 12px;
     }
 
     @media (max-width: 900px) {
