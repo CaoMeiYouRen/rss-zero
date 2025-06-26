@@ -23,7 +23,7 @@
                     <v-btn
                         color="primary"
                         size="large"
-                        to="/subscription"
+                        to="/feed"
                         class="welcome-page__btn"
                         rounded
                     >

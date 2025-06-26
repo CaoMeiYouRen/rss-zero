@@ -4,7 +4,6 @@ import { Account } from '../entities/account'
 import { Session } from '../entities/session'
 import { User } from '../entities/user'
 import { Verification } from '../entities/verification'
-import { Subscription } from '../entities/subscription'
 import { Feed } from '../entities/feed'
 import { SnakeCaseNamingStrategy } from './naming-strategy'
 
