@@ -98,7 +98,19 @@ export const auth = betterAuth({
             })
         },
     },
-
+    user: {
+        changeEmail: {
+            enabled: true, // 启用更改邮箱功能
+            // 发送更改邮箱验证邮件
+            sendChangeEmailVerification: async ({ user, newEmail, url, token }, request) => {
+                await sendEmail({
+                    to: user.email, // 验证邮件必须发送到当前用户邮箱以批准更改
+                    subject: '批准邮箱更改',
+                    text: `点击链接以批准更改：${url}`,
+                })
+            },
+        },
+    },
     plugins: [
         username({
             minUsernameLength: 3, // 最小用户名长度
