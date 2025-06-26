@@ -118,8 +118,19 @@ const validUrl = computed(() => validateUrl(newUrl.value))
 const urlRule = (v: string) => validUrl.value || '请输入有效的URL'
 
 async function fetchSubscriptions() {
-    const { data } = await useFetch('/api/subscription')
-    // subscriptions.value = data.value || []
+    const { data, error: err } = await useFetch('/api/feed')
+    if (err.value) {
+        error.value = err.value.message
+        subscriptions.value = []
+    } else if (Array.isArray(data.value)) {
+        subscriptions.value = data.value
+    } else {
+        subscriptions.value = []
+        // 若后端返回错误对象
+        if (data.value && typeof data.value === 'object' && 'error' in data.value) {
+            error.value = (data.value as any).error
+        }
+    }
 }
 
 async function addSubscription() {
@@ -127,12 +138,14 @@ async function addSubscription() {
     if (!validUrl.value) {
         return
     }
-    const { data, error: err } = await useFetch('/api/subscription', {
+    const { data, error: err } = await useFetch('/api/feed', {
         method: 'POST',
         body: { url: newUrl.value },
     })
     if (err.value) {
         error.value = err.value.message
+    } else if (data.value && typeof data.value === 'object' && 'error' in data.value) {
+        error.value = (data.value as any).error
     } else {
         newUrl.value = ''
         fetchSubscriptions()
@@ -140,12 +153,12 @@ async function addSubscription() {
 }
 
 async function removeSubscription(id: string) {
-    await useFetch(`/api/subscription?id=${id}`, { method: 'DELETE' })
+    await useFetch(`/api/feed?id=${id}`, { method: 'DELETE' })
     fetchSubscriptions()
 }
 
 async function downloadOpml() {
-    const res = await fetch('/api/opml')
+    const res = await fetch('/api/feed/opml')
     const blob = await res.blob()
     const url = window.URL.createObjectURL(blob)
     const a = document.createElement('a')
@@ -161,7 +174,7 @@ async function importOpml() {
     }
     const formData = new FormData()
     formData.append('opml', opmlFile.value)
-    const res = await fetch('/api/opml', {
+    const res = await fetch('/api/feed/opml', {
         method: 'POST',
         body: formData,
     })
@@ -173,15 +186,9 @@ async function importOpml() {
     }
 }
 
-// onMounted(async () => {
-//     // 匿名自动登录
-//     const session = authClient.useSession()
-//     if (!session.value.data?.user?.id) {
-//         const user = await authClient.signIn.anonymous()
-//         console.log(user)
-//     }
-//     // fetchSubscriptions()
-// })
+onMounted(() => {
+    fetchSubscriptions()
+})
 </script>
 
 <style lang="scss" scoped>
