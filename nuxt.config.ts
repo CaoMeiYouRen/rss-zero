@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
+import tailwindcss from '@tailwindcss/vite'
 export default defineNuxtConfig({
     compatibilityDate: '2025-03-15',
     devtools: { enabled: false },
@@ -37,6 +38,9 @@ export default defineNuxtConfig({
                 },
             },
         },
+        plugins: [
+            tailwindcss() as any,
+        ],
     },
     nitro: {
         vercel: {

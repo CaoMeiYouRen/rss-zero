@@ -19,6 +19,7 @@
   "dependencies": {
     "@hedystia/better-auth-typeorm": "^0.2.0",
     "@mdi/font": "^7.4.47",
+    "@tailwindcss/vite": "^4.1.11",
     "@vueuse/core": "^13.3.0",
     "animate.css": "^4.1.1",
     "await-to-js": "^3.0.0",
@@ -46,10 +47,11 @@
   "pnpm": {
     "onlyBuiltDependencies": [
       "@parcel/watcher",
+      "@tailwindcss/oxide",
       "esbuild"
     ],
     "overrides": {
-      "vite": "^6.2.6",
+      "vite": "^6.3.5",
       "parse-git-config": "^3.0.0",
       "esbuild": "^0.25.0"
     }
@@ -70,6 +72,7 @@
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
     "@vue/eslint-config-typescript": "^13.0.0",
+    "autoprefixer": "^10.4.21",
     "commitizen": "^4.2.3",
     "conventional-changelog-cmyr-config": "^2.1.2",
     "cross-env": "^7.0.3",
@@ -80,6 +83,7 @@
     "eslint-plugin-vue": "^9.33.0",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
+    "postcss": "^8.5.6",
     "postcss-html": "^1.5.0",
     "sass": "^1.89.2",
     "semantic-release": "21.0.1",
@@ -89,8 +93,9 @@
     "stylelint-config-standard": "^29.0.0",
     "stylelint-order": "^6.0.1",
     "stylelint-scss": "^4.3.0",
+    "tailwindcss": "^4.1.11",
     "typescript": "^5.8.3",
-    "vite": "^6.0.1",
+    "vite": "^6.3.5",
     "vite-plugin-vuetify": "^2.1.1",
     "vitest": "^2.1.6"
   },
