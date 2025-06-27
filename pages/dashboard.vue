@@ -11,7 +11,7 @@
                         </h2>
                         <div class="flex space-x-2">
                             <button class="bg-light hover:bg-gray-200 px-3 py-1 rounded-md text-dark transition-custom">
-                                <i class="fa fa-calendar mr-1" /> 本周
+                                <i class="mdi mdi-calendar mr-1" /> 本周
                             </button>
                             <button
                                 class="bg-primary hover:bg-primary/90 px-3 py-1 rounded-md text-white transition-custom"
@@ -23,7 +23,7 @@
 
                     <!-- 统计卡片 -->
                     <div class="gap-6 grid grid-cols-1 lg:grid-cols-4 mb-8 md:grid-cols-2">
-                        <div class="bg-white border-l-4 border-primary p-6 rounded-xl shadow-sm">
+                        <div class="bg-white  duration-300  hover:-translate-y-1  hover:shadow-custom-hover  p-5  rounded-xl  shadow-custom  transform  transition-all">
                             <div class="flex items-start justify-between">
                                 <div>
                                     <p class="text-gray-500 text-sm">
@@ -37,12 +37,12 @@
                                     </p>
                                 </div>
                                 <div class="bg-primary/10 p-3 rounded-lg">
-                                    <i class="fa fa-rss text-primary text-xl" />
+                                    <i class="mdi mdi-rss text-primary text-xl" />
                                 </div>
                             </div>
                         </div>
 
-                        <div class="bg-white border-l-4 border-secondary p-6 rounded-xl shadow-sm">
+                        <div class="bg-white border-secondary border-t-4 duration-300 hover:-translate-y-1 hover:shadow-custom-hover p-5 rounded-xl shadow-custom transform transition-all">
                             <div class="flex items-start justify-between">
                                 <div>
                                     <p class="text-gray-500 text-sm">
@@ -56,12 +56,12 @@
                                     </p>
                                 </div>
                                 <div class="bg-secondary/10 p-3 rounded-lg">
-                                    <i class="fa fa-newspaper-o text-secondary text-xl" />
+                                    <i class="mdi mdi-newspaper text-secondary text-xl" />
                                 </div>
                             </div>
                         </div>
 
-                        <div class="bg-white border-l-4 border-success p-6 rounded-xl shadow-sm">
+                        <div class="bg-white border-success border-t-4 duration-300 hover:-translate-y-1 hover:shadow-custom-hover p-5 rounded-xl shadow-custom transform transition-all">
                             <div class="flex items-start justify-between">
                                 <div>
                                     <p class="text-gray-500 text-sm">
@@ -75,12 +75,12 @@
                                     </p>
                                 </div>
                                 <div class="bg-success/10 p-3 rounded-lg">
-                                    <i class="fa fa-check-circle text-success text-xl" />
+                                    <i class="mdi mdi-check-circle text-success text-xl" />
                                 </div>
                             </div>
                         </div>
 
-                        <div class="bg-white border-l-4 border-warning p-6 rounded-xl shadow-sm">
+                        <div class="bg-white border-t-4 border-warning duration-300 hover:-translate-y-1 hover:shadow-custom-hover p-5 rounded-xl shadow-custom transform transition-all">
                             <div class="flex items-start justify-between">
                                 <div>
                                     <p class="text-gray-500 text-sm">
@@ -90,11 +90,11 @@
                                         87%
                                     </h3>
                                     <p class="mt-2 text-sm text-warning">
-                                        <i class="fa fa-minus" /> 与上周持平
+                                        <i class="mdi mdi-minus" /> 与上周持平
                                     </p>
                                 </div>
                                 <div class="bg-warning/10 p-3 rounded-lg">
-                                    <i class="fa fa-star text-warning text-xl" />
+                                    <i class="mdi mdi-star text-warning text-xl" />
                                 </div>
                             </div>
                         </div>
@@ -102,7 +102,7 @@
 
                     <!-- 图表区域 -->
                     <div class="gap-6 grid grid-cols-1 lg:grid-cols-3">
-                        <div class="bg-white lg:col-span-2 p-6 rounded-xl shadow-sm">
+                        <div class="bg-white duration-300 hover:shadow-custom-hover lg:col-span-2 p-5 rounded-xl shadow-custom transition-all">
                             <h3 class="font-semibold mb-4 text-lg">
                                 订阅源活跃度
                             </h3>
@@ -111,7 +111,7 @@
                             </div>
                         </div>
 
-                        <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <div class="bg-white p-5 rounded-xl shadow">
                             <h3 class="font-semibold mb-4 text-lg">
                                 阅读偏好
                             </h3>
@@ -237,14 +237,14 @@ onMounted(() => {
     min-height: 100vh;
     padding: 20px 0;
 
-    // &__bg {
-    //     position: absolute;
-    //     inset: 0;
-    //     z-index: 0;
-    //     background: linear-gradient(135deg, #e3f0ff 0%, #f9fafe 100%);
-    //     width: 100vw;
-    //     height: 100vh;
-    //     pointer-events: none;
-    // }
+    &__bg {
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background: linear-gradient(135deg, #e3f0ff 0%, #f9fafe 100%);
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+    }
 }
 </style>
