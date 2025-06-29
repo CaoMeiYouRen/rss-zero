@@ -1,147 +1,124 @@
 <template>
-    <v-container class="dashboard-page" fluid>
-        <div class="dashboard-page__bg" />
-        <v-row justify="center">
-            <v-col cols="12" lg="10">
-                <!-- 数据看板 -->
-                <section id="dashboard" class="mb-12">
-                    <div class="flex items-center justify-between mb-6">
-                        <h2 class="font-bold text-2xl">
-                            数据看板
-                        </h2>
-                        <div class="flex space-x-2">
-                            <v-btn class="bg-light hover:bg-gray-200 px-3 py-1 rounded-md text-dark transition-custom">
-                                <i class="mdi mdi-calendar mr-1" /> 本周
-                            </v-btn>
-                            <v-btn
-                                class="bg-primary hover:bg-primary/90 px-3 py-1 rounded-md text-white transition-custom"
-                            >
-                                <i class="fa fa-download mr-1" /> 导出报告
-                            </v-btn>
+    <div class="container">
+        <!-- 数据看板 -->
+        <section id="dashboard" class="mb-12">
+            <div class="toolbar">
+                <h2>数据看板</h2>
+                <div class="toolbar-actions">
+                    <button class="btn btn-outline">
+                        <i class="mdi mdi-calendar mr-1" /> 本周
+                    </button>
+                    <button class="btn btn-primary">
+                        <i class="mdi mdi-download mr-1" /> 导出报告
+                    </button>
+                </div>
+            </div>
+
+            <!-- 统计卡片 -->
+            <div class="stat-cards-flex">
+                <div class="card stat-card stat-card-primary">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <p class="text-gray-500 text-sm">
+                                总订阅源
+                            </p>
+                            <div class="stat-value">
+                                24
+                            </div>
+                            <p class="stat-change success">
+                                <i class="mdi mdi-arrow-up" /> 3 个新增 (本周)
+                            </p>
+                        </div>
+                        <div class="stat-icon stat-icon-primary">
+                            <i class="mdi mdi-rss text-xl" />
                         </div>
                     </div>
+                </div>
 
-                    <!-- 统计卡片 -->
-                    <v-row
-                        class="gap-6 mb-8"
-                        cols="1"
-                        md="2"
-                        lg="4"
-                    >
-                        <v-col>
-                            <v-card class="duration-300 hover:-translate-y-1 hover:shadow-lg p-5 shadow-md transform transition-all">
-                                <div class="flex items-start justify-between">
-                                    <div>
-                                        <p class="text-gray-500 text-sm">
-                                            总订阅源
-                                        </p>
-                                        <h3 class="font-bold mt-1 text-3xl">
-                                            24
-                                        </h3>
-                                        <p class="mt-2 text-sm text-success">
-                                            <i class="fa fa-arrow-up" /> 3 个新增 (本周)
-                                        </p>
-                                    </div>
-                                    <div class="bg-primary/20 p-3 rounded-lg">
-                                        <i class="mdi mdi-rss text-primary text-xl" />
-                                    </div>
-                                </div>
-                            </v-card>
-                        </v-col>
-                        <v-col>
-                            <v-card class="border-secondary border-t-4 duration-300 hover:-translate-y-1 hover:shadow-custom-hover p-5 shadow-custom transform transition-all">
-                                <div class="flex items-start justify-between">
-                                    <div>
-                                        <p class="text-gray-500 text-sm">
-                                            今日文章
-                                        </p>
-                                        <h3 class="font-bold mt-1 text-3xl">
-                                            128
-                                        </h3>
-                                        <p class="mt-2 text-danger text-sm">
-                                            <i class="fa fa-arrow-down" /> 8 篇减少 (昨日)
-                                        </p>
-                                    </div>
-                                    <div class="bg-secondary/20 p-3 rounded-lg">
-                                        <i class="mdi mdi-newspaper text-secondary text-xl" />
-                                    </div>
-                                </div>
-                            </v-card>
-                        </v-col>
-                        <v-col>
-                            <v-card class="border-success border-t-4 duration-300 hover:-translate-y-1 hover:shadow-custom-hover p-5 shadow-custom transform transition-all">
-                                <div class="flex items-start justify-between">
-                                    <div>
-                                        <p class="text-gray-500 text-sm">
-                                            阅读完成
-                                        </p>
-                                        <h3 class="font-bold mt-1 text-3xl">
-                                            42%
-                                        </h3>
-                                        <p class="mt-2 text-sm text-success">
-                                            <i class="fa fa-arrow-up" /> 5% 增长 (本周)
-                                        </p>
-                                    </div>
-                                    <div class="bg-success/20 p-3 rounded-lg">
-                                        <i class="mdi mdi-check-circle text-success text-xl" />
-                                    </div>
-                                </div>
-                            </v-card>
-                        </v-col>
-                        <v-col>
-                            <v-card class="border-t-4 border-warning duration-300 hover:-translate-y-1 hover:shadow-custom-hover p-5 shadow-custom transform transition-all">
-                                <div class="flex items-start justify-between">
-                                    <div>
-                                        <p class="text-gray-500 text-sm">
-                                            推荐准确率
-                                        </p>
-                                        <h3 class="font-bold mt-1 text-3xl">
-                                            87%
-                                        </h3>
-                                        <p class="mt-2 text-sm text-warning">
-                                            <i class="mdi mdi-minus" /> 与上周持平
-                                        </p>
-                                    </div>
-                                    <div class="bg-warning/20 p-3 rounded-lg">
-                                        <i class="mdi mdi-star text-warning text-xl" />
-                                    </div>
-                                </div>
-                            </v-card>
-                        </v-col>
-                    </v-row>
+                <div class="card stat-card stat-card-secondary">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <p class="text-gray-500 text-sm">
+                                今日文章
+                            </p>
+                            <div class="stat-value">
+                                128
+                            </div>
+                            <p class="danger stat-change">
+                                <i class="mdi mdi-arrow-down" /> 8 篇减少 (昨日)
+                            </p>
+                        </div>
+                        <div class="stat-icon stat-icon-secondary">
+                            <i class="mdi mdi-newspaper text-xl" />
+                        </div>
+                    </div>
+                </div>
 
-                    <!-- 图表区域 -->
-                    <v-row
-                        class="gap-6"
-                        cols="1"
-                        lg="2"
-                    >
-                        <v-col lg="6">
-                            <v-card class="duration-300 hover:shadow-custom-hover p-5 shadow-custom transition-all">
-                                <h3 class="font-semibold mb-4 text-lg">
-                                    订阅源活跃度
-                                </h3>
-                                <div class="h-80">
-                                    <canvas id="activityChart" />
-                                </div>
-                            </v-card>
-                        </v-col>
+                <div class="card stat-card stat-card-success">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <p class="text-gray-500 text-sm">
+                                阅读完成
+                            </p>
+                            <div class="stat-value">
+                                42%
+                            </div>
+                            <p class="stat-change success">
+                                <i class="mdi mdi-arrow-up" /> 5% 增长 (本周)
+                            </p>
+                        </div>
+                        <div class="stat-icon stat-icon-success">
+                            <i class="mdi mdi-check-circle text-xl" />
+                        </div>
+                    </div>
+                </div>
 
-                        <v-col lg="6">
-                            <v-card class="duration-300 hover:shadow-lgp-5 shadow-md transition-all">
-                                <h3 class="font-semibold mb-4 text-lg">
-                                    阅读偏好
-                                </h3>
-                                <div class="h-80">
-                                    <canvas id="preferenceChart" />
-                                </div>
-                            </v-card>
-                        </v-col>
-                    </v-row>
-                </section>
-            </v-col>
-        </v-row>
-    </v-container>
+                <div class="card stat-card stat-card-warning">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <p class="text-gray-500 text-sm">
+                                推荐准确率
+                            </p>
+                            <div class="stat-value">
+                                87%
+                            </div>
+                            <p class="stat-change warning">
+                                <i class="mdi mdi-minus" /> 与上周持平
+                            </p>
+                        </div>
+                        <div class="stat-icon stat-icon-warning">
+                            <i class="mdi mdi-star text-xl" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 图表区域 -->
+            <div class="grid grid-cols-1 lg:grid-cols-3">
+                <div class="card lg:col-span-2">
+                    <div class="p-6">
+                        <h3 class="font-semibold mb-4 text-lg">
+                            订阅源活跃度
+                        </h3>
+                        <div class="chart-container">
+                            <canvas id="activityChart" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="p-6">
+                        <h3 class="font-semibold mb-4 text-lg">
+                            阅读偏好
+                        </h3>
+                        <div class="chart-container">
+                            <canvas id="preferenceChart" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -250,19 +227,179 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.dashboard-page {
-    position: relative;
-    min-height: 100vh;
-    padding: 20px 0;
-
-    &__bg {
-        position: absolute;
-        inset: 0;
-        z-index: -1;
-        background: linear-gradient(135deg, #e3f0ff 0%, #f9fafe 100%);
-        width: 100vw;
-        height: 100vh;
-        pointer-events: none;
+.container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 24px;
     }
-}
+
+    .card {
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      margin-bottom: 24px;
+      overflow: hidden;
+      transition: box-shadow 0.3s ease;
+      padding: 1em;
+    }
+
+    .card:hover {
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-card {
+      padding: 24px;
+      border-left: 4px solid;
+    }
+
+    .stat-card-primary {
+      border-color: #1976D2;
+    }
+
+    .stat-card-secondary {
+      border-color: #5C6BC0;
+    }
+
+    .stat-card-success {
+      border-color: #43A047;
+    }
+
+    .stat-card-warning {
+      border-color: #FFB300;
+    }
+
+    .stat-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      border-radius: 8px;
+    }
+
+    .stat-icon-primary {
+      background-color: rgba(25, 118, 210, 0.1);
+      color: #1976D2;
+    }
+
+    .stat-icon-secondary {
+      background-color: rgba(92, 107, 192, 0.1);
+      color: #5C6BC0;
+    }
+
+    .stat-icon-success {
+      background-color: rgba(67, 160, 71, 0.1);
+      color: #43A047;
+    }
+
+    .stat-icon-warning {
+      background-color: rgba(255, 179, 0, 0.1);
+      color: #FFB300;
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: bold;
+      margin-top: 8px;
+      margin-bottom: 4px;
+    }
+
+    .stat-change {
+      font-size: 14px;
+    }
+
+    .success {
+      color: #43A047;
+    }
+
+    .danger {
+      color: #E53935;
+    }
+
+    .warning {
+      color: #FFB300;
+    }
+
+    .chart-container {
+      height: 320px;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-primary {
+      background-color: #1976D2;
+      color: #fff;
+      border: none;
+    }
+
+    .btn-primary:hover {
+      background-color: #0D47A1;
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      border: 1px solid #ddd;
+      color: #333;
+    }
+
+    .btn-outline:hover {
+      background-color: #f5f5f5;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .toolbar h2 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .toolbar-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .stat-cards-flex {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      margin-bottom: 24px;
+
+      // 让每个卡片在桌面端平均分布，移动端自适应
+      .stat-card {
+        flex: 1 1 220px;
+        min-width: 180px;
+        max-width: 100%;
+      }
+    }
+
+    /* 响应式设计 */
+    .grid {
+      display: grid;
+      gap: 24px;
+    }
+
+    .grid-cols-4 {
+      margin-bottom: 0;
+    }
+
+    @media (min-width: 1024px) {
+      .grid-cols-3 {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .col-span-2 {
+        grid-column: span 2;
+      }
+    }
 </style>
