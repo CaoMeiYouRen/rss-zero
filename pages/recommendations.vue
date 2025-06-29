@@ -1,10 +1,10 @@
 <template>
-    <v-container class="recommendations-page" fluid>
+    <v-container class="page-bg recommendations-page" fluid>
         <div class="content-wrapper">
             <!-- 推荐内容 -->
             <section id="recommendations" class="mb-8">
                 <div class="recommend-header">
-                    <h2 class="recommend-title">
+                    <h2 class="page-title">
                         推荐内容
                     </h2>
                     <div class="recommend-search-bar">
@@ -315,11 +315,16 @@
 </template>
 
 <style scoped lang="scss">
+@use '@/styles/common.scss' as *;
+
 /* 布局样式 */
 .content-wrapper {
-    max-width: 1440px;
-    margin: 0 auto;
-    padding: 24px;
+    // max-width: 1440px;
+    // margin: 0 auto;
+    padding: 24px 20px;
+    @media (max-width: 700px) {
+        padding: 12px 2vw;
+    }
 }
 
 /* 按钮样式 */
@@ -672,11 +677,16 @@
     align-items: center;
     justify-content: space-between;
     margin-bottom: 24px;
+    @media (max-width: 600px) {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
 }
 
-.recommend-title {
-    font-weight: 700;
-    font-size: 24px;
+.page-title {
+    /* 保证标题左对齐 */
+    margin-bottom: 0;
 }
 
 .recommend-search-bar {

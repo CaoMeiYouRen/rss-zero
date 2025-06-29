@@ -1,7 +1,9 @@
 <template>
-    <section class="subscriptions">
+    <section class="page-bg subscriptions">
         <div class="subscriptions__header">
-            <h2>订阅管理</h2>
+            <h2 class="page-title">
+                订阅管理
+            </h2>
             <div class="subscriptions__actions">
                 <div class="subscriptions__search">
                     <input
@@ -26,7 +28,7 @@
             </div>
         </div>
 
-        <div class="subscriptions__add">
+        <div class="card subscriptions__add">
             <h3>添加新订阅</h3>
             <div class="subscriptions__add-row">
                 <input
@@ -47,7 +49,7 @@
             </div>
         </div>
 
-        <div class="subscriptions__table-wrap">
+        <div class="card subscriptions__table-wrap">
             <table v-if="filteredSubscriptions.length" class="subscriptions__table">
                 <thead>
                     <tr>
@@ -247,13 +249,12 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
+@use '@/styles/common.scss' as *;
+
 .subscriptions {
-    // max-width: 1200px;
-    // margin: 0 auto;
     padding: 24px 40px;
-    font-size: 15px;
     @media (max-width: 700px) {
-        padding: 12px 2vw 32px 2vw;
+        padding: 12px 2vw;
     }
     &__header {
         display: flex;
@@ -262,9 +263,11 @@ onMounted(() => {
         align-items: center;
         margin-bottom: 24px;
         gap: 12px;
-        h2 {
-            font-size: 2rem;
+        .page-title {
+            margin-bottom: 0;
+            font-size: 24px;
             font-weight: bold;
+            text-align: left;
         }
     }
     &__actions {
@@ -312,11 +315,7 @@ onMounted(() => {
         }
     }
     &__add {
-        background: #fff;
-        border-radius: 16px;
-        box-shadow: 0 2px 8px 0 rgba(0,0,0,0.03);
-        padding: 24px;
-        margin-bottom: 24px;
+        // 移除 card 样式，统一用 .card
         h3 {
             font-size: 1.1rem;
             font-weight: 600;
@@ -377,9 +376,7 @@ onMounted(() => {
         font-size: 14px;
     }
     &__table-wrap {
-        background: #fff;
-        border-radius: 16px;
-        box-shadow: 0 2px 8px 0 rgba(0,0,0,0.03);
+        // 移除 card 样式，统一用 .card
         overflow-x: auto;
         padding: 0;
     }
@@ -497,3 +494,4 @@ onMounted(() => {
     }
 }
 </style>
+

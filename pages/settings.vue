@@ -1,7 +1,7 @@
 <template>
-    <div class="settings-page">
+    <div class="page-bg settings-page">
         <div class="settings-page__header">
-            <h2 class="settings-page__title">
+            <h2 class="page-title">
                 设置
             </h2>
             <button class="settings-page__save-btn">
@@ -12,8 +12,8 @@
         <div class="settings-page__main">
             <div class="settings-page__left">
                 <!-- 阅读设置 -->
-                <div class="settings-card">
-                    <h3 class="settings-card__title">
+                <div class="card settings-card">
+                    <h3 class="page-subtitle settings-card__title">
                         阅读设置
                     </h3>
                     <div class="settings-card__body">
@@ -104,8 +104,8 @@
                 </div>
 
                 <!-- 推荐算法设置 -->
-                <div class="settings-card">
-                    <h3 class="settings-card__title">
+                <div class="card settings-card">
+                    <h3 class="page-subtitle settings-card__title">
                         推荐算法设置
                     </h3>
                     <div class="settings-card__body">
@@ -191,7 +191,7 @@
             <!-- 右侧栏 -->
             <div class="settings-page__right">
                 <!-- 用户信息 -->
-                <div class="settings-card">
+                <div class="card settings-card">
                     <div class="settings-user">
                         <img
                             src="https://picsum.photos/200/200?random=user"
@@ -224,8 +224,8 @@
                 </div>
 
                 <!-- 应用信息 -->
-                <div class="settings-card">
-                    <h3 class="settings-card__title">
+                <div class="card settings-card">
+                    <h3 class="page-subtitle settings-card__title">
                         应用信息
                     </h3>
                     <div class="settings-appinfo">
@@ -251,8 +251,8 @@
                 </div>
 
                 <!-- 帮助与支持 -->
-                <div class="settings-card">
-                    <h3 class="settings-card__title">
+                <div class="card settings-card">
+                    <h3 class="page-subtitle settings-card__title">
                         帮助与支持
                     </h3>
                     <div class="settings-help">
@@ -298,22 +298,33 @@ const factors = ref([
 </script>
 
 <style scoped lang="scss">
+@use '@/styles/common.scss' as *;
+
 // 修复全局 * {padding:0;margin:0;} 影响，补充必要的间距和布局
 .settings-page {
-    // margin: 0 40px;
     padding: 24px 40px;
-    background: #f7f8fa;
-    min-height: 100vh;
-    box-sizing: border-box;
+    @media (max-width: 700px) {
+        padding: 12px 2vw;
+    }
     &__header {
         display: flex;
         align-items: center;
         justify-content: space-between;
         margin-bottom: 24px;
+        @media (max-width: 600px) {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .page-title {
+            margin-bottom: 0;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: left;
+        }
     }
     &__title {
-        font-weight: bold;
-        font-size: 24px;
+        // 移除，统一用 .page-title
     }
     &__save-btn {
         background: #2563eb;
@@ -360,8 +371,7 @@ const factors = ref([
     box-shadow: 0 2px 8px 0 rgba(0,0,0,0.03);
     padding: 24px;
     &__title {
-        font-weight: 600;
-        font-size: 18px;
+        // 移除 font-size/font-weight，统一用 .page-subtitle
         margin-bottom: 16px;
     }
     &__body {
@@ -690,3 +700,4 @@ const factors = ref([
     }
 }
 </style>
+

@@ -1,0 +1,36 @@
+.page-bg {
+  background: #f7f8fa;
+  min-height: 100vh;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 24px;
+  color: #222;
+}
+
+.page-subtitle {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #444;
+}
+
+.card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.03);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 700px) {
+  .page-title {
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+  .card {
+    padding: 16px;
+  }
+}

@@ -54,7 +54,7 @@
             </div>
         </header>
         <!-- 主内容 -->
-        <main class="layout-default__main">
+        <main class="layout-default__main page-bg">
             <slot />
         </main>
         <!-- 页脚 -->
@@ -103,6 +103,7 @@
 </script>
 
 <style scoped lang="scss">
+@use '@/styles/common.scss' as *;
 .layout-default {
   min-height: 100vh;
   display: flex;
@@ -185,7 +186,6 @@
   &__main {
     flex: 1 1 auto;
     min-height: 0;
-    background: #f9fafe;
   }
 
   &__footer {
