@@ -1,388 +1,277 @@
 <template>
-    <div class="settings-page-container">
-        <v-container class="settings-page" fluid>
-            <div class="settings-page__bg" />
-            <v-row justify="center">
-                <v-col
-                    cols="12"
-                    lg="10"
-                >
-                    <!-- 设置 -->
-                    <section id="settings" class="mb-12">
-                        <div class="flex items-center justify-between mb-6">
-                            <h2 class="font-bold text-2xl">
-                                设置
-                            </h2>
-                            <v-btn color="primary" class="transition-custom">
-                                <v-icon left>
-                                    mdi-save
-                                </v-icon> 保存设置
-                            </v-btn>
+    <div class="settings-page">
+        <div class="settings-page__header">
+            <h2 class="settings-page__title">
+                设置
+            </h2>
+            <button class="settings-page__save-btn">
+                <span class="mdi mdi-content-save settings-page__icon" /> 保存设置
+            </button>
+        </div>
+
+        <div class="settings-page__main">
+            <div class="settings-page__left">
+                <!-- 阅读设置 -->
+                <div class="settings-card">
+                    <h3 class="settings-card__title">
+                        阅读设置
+                    </h3>
+                    <div class="settings-card__body">
+                        <div class="settings-row">
+                            <div>
+                                <h4 class="settings-row__label">
+                                    文章摘要长度
+                                </h4>
+                                <p class="settings-row__desc">
+                                    控制文章摘要的显示长度
+                                </p>
+                            </div>
+                            <div class="settings-row__input-group">
+                                <button class="settings-row__btn">
+                                    <span class="mdi mdi-minus" />
+                                </button>
+                                <input
+                                    type="text"
+                                    :value="summaryLength"
+                                    class="settings-row__input"
+                                    aria-label="Selected value"
+                                    readonly
+                                >
+                                <button class="settings-row__btn">
+                                    <span class="mdi mdi-plus" />
+                                </button>
+                                <span class="settings-row__unit">段落</span>
+                            </div>
                         </div>
 
-                        <div class="gap-8 grid grid-cols-1 lg:grid-cols-3">
-                            <div class="lg:col-span-2 space-y-6">
-                                <!-- 阅读设置 -->
-                                <div class="bg-white p-6 rounded-xl shadow-sm">
-                                    <h3 class="font-semibold mb-4 text-lg">
-                                        阅读设置
-                                    </h3>
-                                    <div class="space-y-4">
-                                        <div class="flex items-center justify-between">
-                                            <div>
-                                                <h4 class="font-medium text-gray-900 text-sm">
-                                                    文章摘要长度
-                                                </h4>
-                                                <p class="text-gray-500 text-xs">
-                                                    控制文章摘要的显示长度
-                                                </p>
-                                            </div>
-                                            <v-number-input
-                                                v-model="summaryLength"
-                                                :min="1"
-                                                :max="10"
-                                                class="w-32"
-                                                controls
-                                                label="段落"
-                                            />
-                                        </div>
-
-                                        <div class="flex items-center justify-between">
-                                            <div>
-                                                <h4 class="font-medium text-gray-900 text-sm">
-                                                    自动翻译
-                                                </h4>
-                                                <p class="text-gray-500 text-xs">
-                                                    自动翻译非母语文章
-                                                </p>
-                                            </div>
-                                            <v-switch
-                                                id="toggle1"
-                                                v-model="autoTranslate"
-                                                color="primary"
-                                                hide-details
-                                            />
-                                        </div>
-
-                                        <div class="flex items-center justify-between">
-                                            <div>
-                                                <h4 class="font-medium text-gray-900 text-sm">
-                                                    暗色模式
-                                                </h4>
-                                                <p class="text-gray-500 text-xs">
-                                                    切换界面主题
-                                                </p>
-                                            </div>
-                                            <v-switch
-                                                id="toggle2"
-                                                v-model="darkMode"
-                                                color="primary"
-                                                hide-details
-                                            />
-                                        </div>
-
-                                        <div class="flex items-center justify-between">
-                                            <div>
-                                                <h4 class="font-medium text-gray-900 text-sm">
-                                                    自动加载更多
-                                                </h4>
-                                                <p class="text-gray-500 text-xs">
-                                                    滚动到底部时自动加载更多文章
-                                                </p>
-                                            </div>
-                                            <v-switch
-                                                id="toggle3"
-                                                v-model="autoLoadMore"
-                                                color="primary"
-                                                hide-details
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- 推荐算法设置 -->
-                                <div class="bg-white p-6 rounded-xl shadow-sm">
-                                    <h3 class="font-semibold mb-4 text-lg">
-                                        推荐算法设置
-                                    </h3>
-                                    <div class="space-y-4">
-                                        <div>
-                                            <label class="block font-medium mb-1 text-gray-700 text-sm">推荐权重</label>
-                                            <div class="gap-4 grid grid-cols-1 md:grid-cols-3">
-                                                <div>
-                                                    <label class="block mb-1 text-gray-500 text-xs">关键词匹配</label>
-                                                    <v-slider
-                                                        v-model="keywordWeight"
-                                                        :min="0"
-                                                        :max="100"
-                                                        class="w-full"
-                                                        hide-details
-                                                        label="关键词匹配"
-                                                        ticks="always"
-                                                    >
-                                                        <template #append>
-                                                            <span class="font-medium text-gray-900 text-xs">{{ keywordWeight }}%</span>
-                                                        </template>
-                                                    </v-slider>
-                                                </div>
-                                                <div>
-                                                    <label class="block mb-1 text-gray-500 text-xs">来源可信度</label>
-                                                    <v-slider
-                                                        v-model="sourceWeight"
-                                                        :min="0"
-                                                        :max="100"
-                                                        class="w-full"
-                                                        hide-details
-                                                        label="来源可信度"
-                                                        ticks="always"
-                                                    >
-                                                        <template #append>
-                                                            <span class="font-medium text-gray-900 text-xs">{{ sourceWeight }}%</span>
-                                                        </template>
-                                                    </v-slider>
-                                                </div>
-                                                <div>
-                                                    <label class="block mb-1 text-gray-500 text-xs">阅读历史</label>
-                                                    <v-slider
-                                                        v-model="historyWeight"
-                                                        :min="0"
-                                                        :max="100"
-                                                        class="w-full"
-                                                        hide-details
-                                                        label="阅读历史"
-                                                        ticks="always"
-                                                    >
-                                                        <template #append>
-                                                            <span class="font-medium text-gray-900 text-xs">{{ historyWeight }}%</span>
-                                                        </template>
-                                                    </v-slider>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            <label class="block font-medium mb-2 text-gray-700 text-sm">重要度计算</label>
-                                            <div class="space-y-2">
-                                                <v-card class="bg-gray-50 p-3">
-                                                    <v-row align="center" justify="space-between">
-                                                        <v-checkbox
-                                                            id="factor1"
-                                                            v-model="factors[0].checked"
-                                                            label="标题关键词匹配"
-                                                            color="primary"
-                                                            hide-details
-                                                            class="text-sm"
-                                                        />
-                                                        <v-number-input
-                                                            v-model="factors[0].weight"
-                                                            :min="0"
-                                                            :max="100"
-                                                            class="w-24"
-                                                            hide-details
-                                                            label="权重"
-                                                            density="compact"
-                                                        />
-                                                    </v-row>
-                                                </v-card>
-
-                                                <v-card class="bg-gray-50 p-3">
-                                                    <v-row align="center" justify="space-between">
-                                                        <v-checkbox
-                                                            id="factor2"
-                                                            v-model="factors[1].checked"
-                                                            label="文章长度"
-                                                            color="primary"
-                                                            hide-details
-                                                            class="text-sm"
-                                                        />
-                                                        <v-number-input
-                                                            v-model="factors[1].weight"
-                                                            :min="0"
-                                                            :max="100"
-                                                            class="w-24"
-                                                            hide-details
-                                                            label="权重"
-                                                            density="compact"
-                                                        />
-                                                    </v-row>
-                                                </v-card>
-
-                                                <v-card class="bg-gray-50 p-3">
-                                                    <v-row align="center" justify="space-between">
-                                                        <v-checkbox
-                                                            id="factor3"
-                                                            v-model="factors[2].checked"
-                                                            label="发布时间"
-                                                            color="primary"
-                                                            hide-details
-                                                            class="text-sm"
-                                                        />
-                                                        <v-number-input
-                                                            v-model="factors[2].weight"
-                                                            :min="0"
-                                                            :max="100"
-                                                            class="w-24"
-                                                            hide-details
-                                                            label="权重"
-                                                            density="compact"
-                                                        />
-                                                    </v-row>
-                                                </v-card>
-
-                                                <v-card class="bg-gray-50 p-3">
-                                                    <v-row align="center" justify="space-between">
-                                                        <v-checkbox
-                                                            id="factor4"
-                                                            v-model="factors[3].checked"
-                                                            label="来源可信度"
-                                                            color="primary"
-                                                            hide-details
-                                                            class="text-sm"
-                                                        />
-                                                        <v-number-input
-                                                            v-model="factors[3].weight"
-                                                            :min="0"
-                                                            :max="100"
-                                                            class="w-24"
-                                                            hide-details
-                                                            label="权重"
-                                                            density="compact"
-                                                        />
-                                                    </v-row>
-                                                </v-card>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="settings-row">
+                            <div>
+                                <h4 class="settings-row__label">
+                                    自动翻译
+                                </h4>
+                                <p class="settings-row__desc">
+                                    自动翻译非母语文章
+                                </p>
                             </div>
+                            <div class="settings-row__switch">
+                                <input
+                                    id="toggle1"
+                                    type="checkbox"
+                                    class="settings-switch__input"
+                                >
+                                <label for="toggle1" class="settings-switch__label" />
+                            </div>
+                        </div>
 
-                            <!-- 右侧栏 -->
-                            <div class="space-y-6">
-                                <!-- 用户信息 -->
-                                <div class="bg-white p-6 rounded-xl shadow-sm">
-                                    <div class="flex items-center mb-4">
-                                        <img
-                                            src="https://picsum.photos/200/200?random=user"
-                                            alt="用户头像"
-                                            class="h-12 mr-4 rounded-full w-12"
+                        <div class="settings-row">
+                            <div>
+                                <h4 class="settings-row__label">
+                                    暗色模式
+                                </h4>
+                                <p class="settings-row__desc">
+                                    切换界面主题
+                                </p>
+                            </div>
+                            <div class="settings-row__switch">
+                                <input
+                                    id="toggle2"
+                                    type="checkbox"
+                                    class="settings-switch__input"
+                                >
+                                <label for="toggle2" class="settings-switch__label" />
+                            </div>
+                        </div>
+
+                        <div class="settings-row">
+                            <div>
+                                <h4 class="settings-row__label">
+                                    自动加载更多
+                                </h4>
+                                <p class="settings-row__desc">
+                                    滚动到底部时自动加载更多文章
+                                </p>
+                            </div>
+                            <div class="settings-row__switch">
+                                <input
+                                    id="toggle3"
+                                    type="checkbox"
+                                    class="settings-switch__input"
+                                >
+                                <label for="toggle3" class="settings-switch__label" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 推荐算法设置 -->
+                <div class="settings-card">
+                    <h3 class="settings-card__title">
+                        推荐算法设置
+                    </h3>
+                    <div class="settings-card__body">
+                        <div>
+                            <label class="settings-label">推荐权重</label>
+                            <div class="settings-weight-group">
+                                <div class="settings-weight">
+                                    <label class="settings-weight__label">关键词匹配</label>
+                                    <div class="settings-weight__slider">
+                                        <input
+                                            type="range"
+                                            min="0"
+                                            max="100"
+                                            :value="keywordWeight"
+                                            class="settings-slider"
                                         >
-                                        <div>
-                                            <h3 class="font-semibold text-gray-900 text-sm">
-                                                张三
-                                            </h3>
-                                            <p class="text-gray-500 text-xs">
-                                                zhangsan@example.com
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="space-y-3">
-                                        <v-btn
-                                            variant="outlined"
-                                            class="justify-start w-full"
-                                            icon="mdi-account-circle"
-                                        >
-                                            个人资料
-                                        </v-btn>
-                                        <v-btn
-                                            variant="outlined"
-                                            class="justify-start w-full"
-                                            icon="mdi-lock"
-                                        >
-                                            更改密码
-                                        </v-btn>
-                                        <v-btn
-                                            variant="outlined"
-                                            class="justify-start w-full"
-                                            icon="mdi-bell"
-                                        >
-                                            通知设置
-                                        </v-btn>
-                                        <v-btn
-                                            color="error"
-                                            class="justify-start w-full"
-                                            icon="mdi-logout"
-                                        >
-                                            退出登录
-                                        </v-btn>
+                                        <span class="settings-weight__percent">{{ keywordWeight }}%</span>
                                     </div>
                                 </div>
-
-                                <!-- 应用信息 -->
-                                <div class="bg-white p-6 rounded-xl shadow-sm">
-                                    <h3 class="font-semibold mb-4 text-lg">
-                                        应用信息
-                                    </h3>
-                                    <div class="space-y-3">
-                                        <div class="flex items-center justify-between">
-                                            <span class="text-gray-600 text-sm">版本</span>
-                                            <span class="font-medium text-gray-900 text-sm">1.0.0</span>
-                                        </div>
-
-                                        <div class="flex items-center justify-between">
-                                            <span class="text-gray-600 text-sm">上次更新</span>
-                                            <span class="font-medium text-gray-900 text-sm">2025-06-15</span>
-                                        </div>
-
-                                        <div class="flex items-center justify-between">
-                                            <span class="text-gray-600 text-sm">存储空间</span>
-                                            <span class="font-medium text-gray-900 text-sm">128MB / 512MB</span>
-                                        </div>
-
-                                        <div class="bg-gray-200 h-2 mt-2 rounded-full w-full">
-                                            <div class="bg-primary h-2 rounded-full" style="width: 25%" />
-                                        </div>
+                                <div class="settings-weight">
+                                    <label class="settings-weight__label">来源可信度</label>
+                                    <div class="settings-weight__slider">
+                                        <input
+                                            type="range"
+                                            min="0"
+                                            max="100"
+                                            :value="sourceWeight"
+                                            class="settings-slider"
+                                        >
+                                        <span class="settings-weight__percent">{{ sourceWeight }}%</span>
                                     </div>
-                                    <v-btn
-                                        variant="outlined"
-                                        class="justify-start mt-4 w-full"
-                                        icon="mdi-refresh"
-                                    >
-                                        检查更新
-                                    </v-btn>
                                 </div>
-
-                                <!-- 帮助与支持 -->
-                                <div class="bg-white p-6 rounded-xl shadow-sm">
-                                    <h3 class="font-semibold mb-4 text-lg">
-                                        帮助与支持
-                                    </h3>
-                                    <div class="space-y-3">
-                                        <v-btn
-                                            variant="text"
-                                            class="bg-gray-50 hover:bg-gray-100 justify-start w-full"
-                                            icon="mdi-help-circle"
+                                <div class="settings-weight">
+                                    <label class="settings-weight__label">阅读历史</label>
+                                    <div class="settings-weight__slider">
+                                        <input
+                                            type="range"
+                                            min="0"
+                                            max="100"
+                                            :value="historyWeight"
+                                            class="settings-slider"
                                         >
-                                            帮助中心
-                                        </v-btn>
-                                        <v-btn
-                                            variant="text"
-                                            class="bg-gray-50 hover:bg-gray-100 justify-start w-full"
-                                            icon="mdi-book"
-                                        >
-                                            使用教程
-                                        </v-btn>
-                                        <v-btn
-                                            variant="text"
-                                            class="bg-gray-50 hover:bg-gray-100 justify-start w-full"
-                                            icon="mdi-file-document"
-                                        >
-                                            隐私政策
-                                        </v-btn>
-                                        <v-btn
-                                            variant="text"
-                                            class="bg-gray-50 hover:bg-gray-100 justify-start w-full"
-                                            icon="mdi-email"
-                                        >
-                                            联系我们
-                                        </v-btn>
+                                        <span class="settings-weight__percent">{{ historyWeight }}%</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </section>
-                </v-col>
-            </v-row>
-        </v-container>
+
+                        <div>
+                            <label class="settings-label">重要度计算</label>
+                            <div class="settings-factor-list">
+                                <div
+                                    v-for="factor in factors"
+                                    :key="factor.id"
+                                    class="settings-factor"
+                                >
+                                    <div class="settings-factor__left">
+                                        <input
+                                            :id="factor.id"
+                                            type="checkbox"
+                                            class="settings-factor__checkbox"
+                                            :checked="factor.checked"
+                                        >
+                                        <label :for="factor.id" class="settings-factor__label">{{ factor.name }}</label>
+                                    </div>
+                                    <div class="settings-factor__right">
+                                        <span class="settings-factor__weight-label">权重:</span>
+                                        <input
+                                            type="number"
+                                            :value="factor.weight"
+                                            min="0"
+                                            max="100"
+                                            class="settings-factor__weight-input"
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧栏 -->
+            <div class="settings-page__right">
+                <!-- 用户信息 -->
+                <div class="settings-card">
+                    <div class="settings-user">
+                        <img
+                            src="https://picsum.photos/200/200?random=user"
+                            alt="用户头像"
+                            class="settings-user__avatar"
+                        >
+                        <div>
+                            <h3 class="settings-user__name">
+                                张三
+                            </h3>
+                            <p class="settings-user__email">
+                                zhangsan@example.com
+                            </p>
+                        </div>
+                    </div>
+                    <div class="settings-user__actions">
+                        <button class="settings-user__btn">
+                            <span class="mdi mdi-account-circle settings-user__btn-icon" /> 个人资料
+                        </button>
+                        <button class="settings-user__btn">
+                            <span class="mdi mdi-key settings-user__btn-icon" /> 更改密码
+                        </button>
+                        <button class="settings-user__btn">
+                            <span class="mdi mdi-bell-ring-outline settings-user__btn-icon" /> 通知设置
+                        </button>
+                        <button class="settings-user__btn settings-user__btn--danger">
+                            <span class="mdi mdi-logout settings-user__btn-icon" /> 退出登录
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 应用信息 -->
+                <div class="settings-card">
+                    <h3 class="settings-card__title">
+                        应用信息
+                    </h3>
+                    <div class="settings-appinfo">
+                        <div class="settings-appinfo__row">
+                            <span class="settings-appinfo__label">版本</span>
+                            <span class="settings-appinfo__value">1.0.0</span>
+                        </div>
+                        <div class="settings-appinfo__row">
+                            <span class="settings-appinfo__label">上次更新</span>
+                            <span class="settings-appinfo__value">2025-06-15</span>
+                        </div>
+                        <div class="settings-appinfo__row">
+                            <span class="settings-appinfo__label">存储空间</span>
+                            <span class="settings-appinfo__value">128MB / 512MB</span>
+                        </div>
+                        <div class="settings-appinfo__progress">
+                            <div class="settings-appinfo__progress-bar" style="width: 25%" />
+                        </div>
+                    </div>
+                    <button class="settings-appinfo__btn">
+                        <span class="mdi mdi-refresh settings-appinfo__btn-icon" /> 检查更新
+                    </button>
+                </div>
+
+                <!-- 帮助与支持 -->
+                <div class="settings-card">
+                    <h3 class="settings-card__title">
+                        帮助与支持
+                    </h3>
+                    <div class="settings-help">
+                        <a href="#" class="settings-help__link">
+                            <span class="mdi mdi-help-circle-outline settings-help__icon" /> 帮助中心
+                        </a>
+                        <a href="#" class="settings-help__link">
+                            <span class="mdi mdi-book-open-page-variant settings-help__icon" /> 使用教程
+                        </a>
+                        <a href="#" class="settings-help__link">
+                            <span class="mdi mdi-file-document-outline settings-help__icon" /> 隐私政策
+                        </a>
+                        <a href="#" class="settings-help__link">
+                            <span class="mdi mdi-email-outline settings-help__icon" /> 联系我们
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -409,19 +298,395 @@ const factors = ref([
 </script>
 
 <style scoped lang="scss">
+// 修复全局 * {padding:0;margin:0;} 影响，补充必要的间距和布局
 .settings-page {
-    position: relative;
+    // margin: 0 40px;
+    padding: 24px 40px;
+    background: #f7f8fa;
     min-height: 100vh;
-    padding: 20px 0;
+    box-sizing: border-box;
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 24px;
+    }
+    &__title {
+        font-weight: bold;
+        font-size: 24px;
+    }
+    &__save-btn {
+        background: #2563eb;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 8px 24px;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        transition: background .2s;
+        &:hover {
+            background: #1d4ed8;
+        }
+    }
+    &__icon {
+        font-size: 20px;
+        margin-right: 6px;
+    }
+    &__main {
+        display: grid;
+        grid-template-columns: 1fr 340px;
+        gap: 32px;
+        @media (max-width: 1024px) {
+            grid-template-columns: 1fr;
+        }
+    }
+    &__left {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+    &__right {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+}
 
-    // &__bg {
-    //     position: absolute;
-    //     inset: 0;
-    //     z-index: 0;
-    //     background: linear-gradient(135deg, #e3f0ff 0%, #f9fafe 100%);
-    //     width: 100vw;
-    //     height: 100vh;
-    //     pointer-events: none;
-    // }
+.settings-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px 0 rgba(0,0,0,0.03);
+    padding: 24px;
+    &__title {
+        font-weight: 600;
+        font-size: 18px;
+        margin-bottom: 16px;
+    }
+    &__body {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+}
+
+.settings-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    &__label {
+        font-weight: 500;
+        color: #222;
+        font-size: 15px;
+    }
+    &__desc {
+        color: #888;
+        font-size: 12px;
+        margin-top: 2px;
+    }
+    &__input-group {
+        display: flex;
+        align-items: center;
+        gap: 0;
+    }
+    &__btn {
+        background: #fff;
+        border: 1px solid #d1d5db;
+        width: 32px;
+        height: 32px;
+        border-radius: 6px 0 0 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 18px;
+        &:last-child {
+            border-radius: 0 6px 6px 0;
+        }
+        &:hover {
+            background: #f3f4f6;
+        }
+    }
+    &__input {
+        width: 48px;
+        height: 32px;
+        border: 1px solid #d1d5db;
+        border-left: none;
+        border-right: none;
+        text-align: center;
+        font-size: 15px;
+        outline: none;
+    }
+    &__unit {
+        margin-left: 8px;
+        color: #888;
+        font-size: 14px;
+    }
+    &__switch {
+        position: relative;
+        width: 48px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+    }
+}
+
+.settings-switch__input {
+    opacity: 0;
+    width: 48px;
+    height: 24px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 2;
+    cursor: pointer;
+}
+.settings-switch__label {
+    display: block;
+    width: 48px;
+    height: 24px;
+    background: #e5e7eb;
+    border-radius: 12px;
+    position: relative;
+    transition: background .2s;
+}
+.settings-switch__input:checked + .settings-switch__label {
+    background: #2563eb;
+}
+.settings-switch__label::after {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border-radius: 50%;
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    transition: left .2s;
+}
+.settings-switch__input:checked + .settings-switch__label::after {
+    left: 26px;
+}
+
+.settings-label {
+    font-weight: 500;
+    color: #444;
+    font-size: 14px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.settings-weight-group {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+.settings-weight {
+    flex: 1 1 120px;
+    min-width: 120px;
+    &__label {
+        color: #888;
+        font-size: 12px;
+        margin-bottom: 4px;
+        display: block;
+    }
+    &__slider {
+        display: flex;
+        align-items: center;
+    }
+    &__percent {
+        font-weight: 500;
+        color: #222;
+        font-size: 13px;
+        margin-left: 8px;
+    }
+}
+.settings-slider {
+    width: 100px;
+    accent-color: #2563eb;
+    margin-right: 0;
+}
+
+.settings-factor-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.settings-factor {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    &__left {
+        display: flex;
+        align-items: center;
+    }
+    &__checkbox {
+        width: 16px;
+        height: 16px;
+        accent-color: #2563eb;
+        border-radius: 4px;
+    }
+    &__label {
+        margin-left: 8px;
+        color: #222;
+        font-size: 14px;
+    }
+    &__right {
+        display: flex;
+        align-items: center;
+    }
+    &__weight-label {
+        color: #888;
+        font-size: 12px;
+        margin-right: 4px;
+    }
+    &__weight-input {
+        width: 40px;
+        height: 24px;
+        border: 1px solid #d1d5db;
+        border-radius: 4px;
+        text-align: center;
+        font-size: 13px;
+        outline: none;
+    }
+}
+
+.settings-user {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+    &__avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        margin-right: 16px;
+        object-fit: cover;
+    }
+    &__name {
+        font-weight: 600;
+        color: #222;
+        font-size: 15px;
+    }
+    &__email {
+        color: #888;
+        font-size: 12px;
+        margin-top: 2px;
+    }
+    &__actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    &__btn {
+        border: 1px solid #d1d5db;
+        background: #fff;
+        color: #444;
+        border-radius: 8px;
+        padding: 8px 0;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background .2s;
+        &-icon {
+            font-size: 18px;
+            margin-right: 8px;
+        }
+        &:hover {
+            background: #f3f4f6;
+        }
+        &--danger {
+            background: #ef4444;
+            color: #fff;
+            border: none;
+            &:hover {
+                background: #dc2626;
+            }
+        }
+    }
+}
+
+.settings-appinfo {
+    &__row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+    }
+    &__label {
+        color: #666;
+        font-size: 13px;
+    }
+    &__value {
+        font-weight: 500;
+        color: #222;
+        font-size: 13px;
+    }
+    &__progress {
+        background: #e5e7eb;
+        height: 8px;
+        border-radius: 4px;
+        width: 100%;
+        margin: 8px 0 0 0;
+        overflow: hidden;
+    }
+    &__progress-bar {
+        background: #2563eb;
+        height: 8px;
+        border-radius: 4px;
+        width: 0;
+        transition: width .3s;
+    }
+    &__btn {
+        border: 1px solid #d1d5db;
+        background: #fff;
+        color: #444;
+        border-radius: 8px;
+        padding: 8px 0;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        margin-top: 16px;
+        transition: background .2s;
+        &-icon {
+            font-size: 18px;
+            margin-right: 8px;
+        }
+        &:hover {
+            background: #f3f4f6;
+        }
+    }
+}
+
+.settings-help {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    &__link {
+        display: flex;
+        align-items: center;
+        color: #444;
+        font-size: 14px;
+        border-radius: 8px;
+        padding: 8px 0 8px 8px;
+        text-decoration: none;
+        transition: background .2s;
+        &:hover {
+            background: #f3f4f6;
+        }
+    }
+    &__icon {
+        font-size: 18px;
+        margin-right: 8px;
+    }
 }
 </style>
