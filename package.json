@@ -23,7 +23,7 @@
     "@vueuse/core": "^13.3.0",
     "animate.css": "^4.1.1",
     "await-to-js": "^3.0.0",
-    "better-auth": "^1.3.26",
+    "better-auth": "^1.4.2",
     "chart.js": "^4.5.0",
     "dayjs": "^1.11.13",
     "fs-extra": "^11.3.0",
